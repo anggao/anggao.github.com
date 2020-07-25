@@ -1,0 +1,228 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Hadoop: Setting up a Single Node Cluster - Ang's Blog</title><meta name=Description content="Ang's Blog"><meta property="og:title" content="Hadoop: Setting up a Single Node Cluster"><meta property="og:description" content="Purpose This document describes how to set up and configure a single-node Hadoop installation so that you can quickly perform simple operations using Hadoop MapReduce and the Hadoop Distributed File System (HDFS).
+Prerequisites  GNU/Linux Java must be installed. Recommended Java versions are described at HadoopJavaVersions ssh must be installed and sshd must be running to use the Hadoop scripts that manage remote Hadoop daemons. A Hadoop distribution, download a recent stable release from one of the Apache Download Mirrors  Installing Software Followings steps are for: Ubuntu 14."><meta property="og:type" content="article"><meta property="og:url" content="http://anggao.github.io/2015-06-21-hadoop-setting-up-a-single-node-cluster/"><meta property="og:image" content="http://anggao.github.io/logo.png"><meta property="article:published_time" content="2015-06-21T00:00:00+00:00"><meta property="article:modified_time" content="2015-06-21T00:00:00+00:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://anggao.github.io/logo.png"><meta name=twitter:title content="Hadoop: Setting up a Single Node Cluster"><meta name=twitter:description content="Purpose This document describes how to set up and configure a single-node Hadoop installation so that you can quickly perform simple operations using Hadoop MapReduce and the Hadoop Distributed File System (HDFS).
+Prerequisites  GNU/Linux Java must be installed. Recommended Java versions are described at HadoopJavaVersions ssh must be installed and sshd must be running to use the Hadoop scripts that manage remote Hadoop daemons. A Hadoop distribution, download a recent stable release from one of the Apache Download Mirrors  Installing Software Followings steps are for: Ubuntu 14."><meta name=application-name content="Ang's Blog"><meta name=apple-mobile-web-app-title content="Ang's Blog"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://anggao.github.io/2015-06-21-hadoop-setting-up-a-single-node-cluster/><link rel=prev href=http://anggao.github.io/2015-06-15-javascript-note-two/><link rel=next href=http://anggao.github.io/2015-06-22-hadoop-hdfs-shell-commands/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Hadoop: Setting up a Single Node Cluster","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/anggao.github.io\/2015-06-21-hadoop-setting-up-a-single-node-cluster\/"},"image":["http:\/\/anggao.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"hadoop","wordcount":541,"url":"http:\/\/anggao.github.io\/2015-06-21-hadoop-setting-up-a-single-node-cluster\/","datePublished":"2015-06-21T00:00:00+00:00","dateModified":"2015-06-21T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":"http:\/\/anggao.github.io\/images\/avatar.png"},"author":{"@type":"Person","name":"Ang"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Ang's Blog"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>Ang's Blog</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><a class=menu-item href=/about/>About </a><a class=menu-item href=https://github.com/anggao title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Ang's Blog"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>Ang's Blog</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/posts/>Posts</a><a class=menu-item href=/tags/>Tags</a><a class=menu-item href=/categories/>Categories</a><a class=menu-item href=/about/>About</a><a class=menu-item href=https://github.com/anggao title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Hadoop: Setting up a Single Node Cluster</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Ang</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2015-06-21>2015-06-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;541 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#purpose>Purpose</a></li><li><a href=#prerequisites>Prerequisites</a></li><li><a href=#installing-software>Installing Software</a></li><li><a href=#configuration>Configuration</a><ul><li><a href=#os>OS</a></li></ul></li></ul></li></ul></nav></div></div><div class=content id=content><h3 id=purpose>Purpose</h3><p>This document describes how to set up and configure a single-node Hadoop installation so that you can quickly perform simple operations using Hadoop MapReduce and the Hadoop Distributed File System (HDFS).</p><h3 id=prerequisites>Prerequisites</h3><ul><li>GNU/Linux</li><li><code>Java</code> must be installed. Recommended Java versions are described at <a href=http://wiki.apache.org/hadoop/HadoopJavaVersions target=_blank rel="noopener noreffer">HadoopJavaVersions</a></li><li><code>ssh</code> must be installed and sshd must be running to use the Hadoop scripts that manage remote Hadoop daemons.
+A Hadoop distribution, download a recent stable release from one of the <a href=http://www.apache.org/dyn/closer.cgi/hadoop/common/ target=_blank rel="noopener noreffer">Apache Download Mirrors</a></li></ul><h3 id=installing-software>Installing Software</h3><p><strong>Followings steps are for: Ubuntu 14.04 LTS, Hadoop-2.6.0</strong></p><p>TIP: Check 32-bit or 64-bit OS: <code>getconf LONG_BIT</code></p><ul><li>JDK - download <a href=http://download.oracle.com/otn/java/jdk/7u45-b18/jdk-7u45-linux-x64.tar.gz target=_blank rel="noopener noreffer">oracle 1.7.0_45</a></li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo mkdir /usr/local/java
+sudo cp jdk-7u45-linux-x64.gz /usr/local/java/
+<span class=nb>cd</span> /usr/local/java/ <span class=o>&amp;&amp;</span> sudo tar -xzvf jdk-7u45-linux-x64.gz
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo vim /etc/profile
+<span class=c1># /etc/profile</span>
+<span class=nv>JAVA_HOME</span><span class=o>=</span>/usr/local/java/jdk1.7.0_45
+<span class=nv>JRE_HOME</span><span class=o>=</span><span class=nv>$JAVA_HOME</span>/jre
+<span class=nv>PATH</span><span class=o>=</span><span class=nv>$slug</span>:<span class=nv>$JAVA_HOME</span>/bin:<span class=nv>$JRE_HOME</span>/bin
+<span class=nb>export</span> JAVA_HOME
+<span class=nb>export</span> JRE_HOME
+<span class=nb>export</span> PATH
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=c1># Inform your Ubuntu Linux system where your Oracle Java JDK/JRE is located.</span>
+sudo update-alternatives --install <span class=s2>&#34;/usr/bin/java&#34;</span> <span class=s2>&#34;java&#34;</span> <span class=s2>&#34;/usr/local/java/jdk1.7.0_45/jre/bin/java&#34;</span> <span class=m>1</span>
+sudo update-alternatives --install <span class=s2>&#34;/usr/bin/javac&#34;</span> <span class=s2>&#34;javac&#34;</span> <span class=s2>&#34;/usr/local/java/jdk1.7.0_45/bin/javac&#34;</span> <span class=m>1</span>
+sudo update-alternatives --install <span class=s2>&#34;/usr/bin/javaws&#34;</span> <span class=s2>&#34;javaws&#34;</span> <span class=s2>&#34;/usr/local/java/jre1.7.0_45/bin/javaws&#34;</span> <span class=m>1</span>
+
+<span class=c1># Inform your Ubuntu Linux system that Oracle Java JDK/JRE must be the default Java.</span>
+sudo update-alternatives --set java /usr/local/java/jdk1.7.0_45/jre/bin/java
+sudo update-alternatives --set javac /usr/local/java/jdk1.7.0_45/bin/javac
+sudo update-alternatives --set javaws /usr/local/java/jdk1.7.0_45/bin/javaws
+
+<span class=c1># Reload your system wide PATH /etc/profile</span>
+. /etc/profile
+</code></pre></td></tr></table></div></div><ul><li>Hadoop-2.6.0</li><li>Unpack the downloaded Hadoop distribution.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=c1># vim etc/hadoop/hadoop-env.sh</span>
+
+<span class=c1># The java implementation to use.</span>
+<span class=nb>export</span> <span class=nv>JAVA_HOME</span><span class=o>=</span>/usr/local/java/jdk1.7.0_45
+</code></pre></td></tr></table></div></div><h3 id=configuration>Configuration</h3><p>Now you are ready to start your Hadoop cluster in one of the three supported modes:</p><ul><li>Local (Standalone) Mode</li><li>Pseudo-Distributed Mode</li><li>Fully-Distributed Mode</li></ul><h4 id=os>OS</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=c1># sudo vim /etc/hosts</span>
+<span class=c1># add new host</span>
+127.0.1.1 YARN001
+</code></pre></td></tr></table></div></div><p><strong>Hadoop (Pseudo-Distributed Mode with YARN)</strong></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-xml data-lang=xml># vim etc/hadoop/mapred-site.xml
+<span class=nt>&lt;configuration&gt;</span>
+    <span class=nt>&lt;property&gt;</span>
+        <span class=nt>&lt;name&gt;</span>mapreduce.framework.name<span class=nt>&lt;/name&gt;</span>
+        <span class=nt>&lt;value&gt;</span>yarn<span class=nt>&lt;/value&gt;</span>
+    <span class=nt>&lt;/property&gt;</span>
+<span class=nt>&lt;/configuration&gt;</span>
+
+# vim etc/hadoop/core-site.xml
+<span class=nt>&lt;configuration&gt;</span>
+    <span class=nt>&lt;property&gt;</span>
+        <span class=nt>&lt;name&gt;</span>fs.default.name<span class=nt>&lt;/name&gt;</span>
+        <span class=nt>&lt;value&gt;</span>hdfs://YARN001:8020<span class=nt>&lt;/value&gt;</span>
+    <span class=nt>&lt;/property&gt;</span>
+<span class=nt>&lt;/configuration&gt;</span>
+
+# vim etc/hadoop/hdfs-site.xml
+<span class=nt>&lt;configuration&gt;</span>
+    <span class=nt>&lt;property&gt;</span>
+        <span class=nt>&lt;name&gt;</span>dfs.replication<span class=nt>&lt;/name&gt;</span>
+        <span class=nt>&lt;value&gt;</span>1<span class=nt>&lt;/value&gt;</span>
+    <span class=nt>&lt;/property&gt;</span>
+    <span class=nt>&lt;property&gt;</span>
+        <span class=nt>&lt;name&gt;</span>dfs.namenode.name.dir<span class=nt>&lt;/name&gt;</span>
+        <span class=nt>&lt;value&gt;</span>/home/anggao/hadoop/dfs/name<span class=nt>&lt;/value&gt;</span>
+    <span class=nt>&lt;/property&gt;</span>
+    <span class=nt>&lt;property&gt;</span>
+        <span class=nt>&lt;name&gt;</span>dfs.datanode.data.dir<span class=nt>&lt;/name&gt;</span>
+        <span class=nt>&lt;value&gt;</span>/home/anggao/hadoop/dfs/name<span class=nt>&lt;/value&gt;</span>
+    <span class=nt>&lt;/property&gt;</span>
+<span class=nt>&lt;/configuration&gt;</span>
+
+# vim etc/hadoop/yarn-site.xml
+<span class=nt>&lt;configuration&gt;</span>
+<span class=c>&lt;!-- Site specific YARN configuration properties --&gt;</span>
+    <span class=nt>&lt;property&gt;</span>
+        <span class=nt>&lt;name&gt;</span>yarn.nodemanager.aux-services<span class=nt>&lt;/name&gt;</span>
+        <span class=nt>&lt;value&gt;</span>mapreduce_shuffle<span class=nt>&lt;/value&gt;</span>
+    <span class=nt>&lt;/property&gt;</span>
+<span class=nt>&lt;/configuration&gt;</span>
+
+# vim etc/hadoop/slaves
+localhost
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell><span class=c1># You can start all processes with start-all.sh, but better starts the process one by one</span>
+sbin/start-all.sh
+
+<span class=c1># Start dfs or YARN with one command</span>
+sbin/start-dfs.sh
+sbin/start-yarn.sh
+
+<span class=c1># Step 1: format dfs</span>
+bin/hadoop namenode -format
+
+<span class=c1># Step 2: start name node</span>
+sbin/hadoop-daemon.sh start namenode
+
+<span class=c1># Step 3: Check running processes</span>
+jps
+
+<span class=c1># Step 4: start data node</span>
+sbin/hadoop-daemon.sh start datanode
+
+<span class=c1># Step 5: check dfs with UI</span>
+http://YARN001:50070/
+
+<span class=c1># Step 6: format dfs, add a file</span>
+bin/hadoop fs -mkdir /home
+bin/hadoop fs -mkdir /home/anggao
+bin/hadoop fs -put README.txt /home/anggao
+
+<span class=c1># Step 7: start YARN</span>
+sbin/start-yarn.sh
+http://YARN001:8088
+
+<span class=c1># Step 8: check mapreduce</span>
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar pi <span class=m>2</span> <span class=m>100</span>
+
+<span class=c1># Step 9: stop dfs and YARN</span>
+sbin/stop-yarn.sh
+sbin/stop-dfs.sh
+</code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2015-06-21</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/2015-06-21-hadoop-setting-up-a-single-node-cluster/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=http://anggao.github.io/2015-06-21-hadoop-setting-up-a-single-node-cluster/ data-title="Hadoop: Setting up a Single Node Cluster" data-via=anggao data-hashtags=hadoop><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=http://anggao.github.io/2015-06-21-hadoop-setting-up-a-single-node-cluster/ data-hashtag=hadoop><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=http://anggao.github.io/2015-06-21-hadoop-setting-up-a-single-node-cluster/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=http://anggao.github.io/2015-06-21-hadoop-setting-up-a-single-node-cluster/ data-title="Hadoop: Setting up a Single Node Cluster"><i class="fab fa-hacker-news fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/hadoop/>hadoop</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/2015-06-15-javascript-note-two/ class=prev rel=prev title="JavaScript Note Two"><i class="fas fa-angle-left fa-fw"></i>JavaScript Note Two</a>
+<a href=/2015-06-22-hadoop-hdfs-shell-commands/ class=next rel=next title="Hadoop: HDFS Shell Commands">Hadoop: HDFS Shell Commands<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.74.3">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2013 - 2020</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>Ang</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','UA-34162724-1',{'anonymize_ip':true});</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-34162724-1" async></script></body></html>

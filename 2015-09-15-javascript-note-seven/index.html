@@ -1,0 +1,341 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>JavaScript Note Seven - Ang's Blog</title><meta name=Description content="Ang's Blog"><meta property="og:title" content="JavaScript Note Seven"><meta property="og:description" content="Modules  Though JavaScript provides no actual module construct yet, objects can be used to create publicly accessible subnamespaces, and functions can be used to create an isolated, private namespace inside of a module. Functions are the only things in JavaScript that create a new scope.  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17  var dayName = (function() { var names = [ &#34;Sunday&#34;, &#34;Monday&#34;, &#34;Tuesday&#34;, &#34;Wednesday&#34;, &#34;Thursday&#34;, &#34;Friday&#34;, &#34;Saturday&#34; ]; return function(number) { return names[number]; }; })(); console."><meta property="og:type" content="article"><meta property="og:url" content="http://anggao.github.io/2015-09-15-javascript-note-seven/"><meta property="og:image" content="http://anggao.github.io/logo.png"><meta property="article:published_time" content="2015-09-15T00:00:00+00:00"><meta property="article:modified_time" content="2015-09-15T00:00:00+00:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://anggao.github.io/logo.png"><meta name=twitter:title content="JavaScript Note Seven"><meta name=twitter:description content="Modules  Though JavaScript provides no actual module construct yet, objects can be used to create publicly accessible subnamespaces, and functions can be used to create an isolated, private namespace inside of a module. Functions are the only things in JavaScript that create a new scope.  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17  var dayName = (function() { var names = [ &#34;Sunday&#34;, &#34;Monday&#34;, &#34;Tuesday&#34;, &#34;Wednesday&#34;, &#34;Thursday&#34;, &#34;Friday&#34;, &#34;Saturday&#34; ]; return function(number) { return names[number]; }; })(); console."><meta name=application-name content="Ang's Blog"><meta name=apple-mobile-web-app-title content="Ang's Blog"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://anggao.github.io/2015-09-15-javascript-note-seven/><link rel=prev href=http://anggao.github.io/2015-09-09-javascript-note-six/><link rel=next href=http://anggao.github.io/2015-09-17-docker-note-one/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"JavaScript Note Seven","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/anggao.github.io\/2015-09-15-javascript-note-seven\/"},"image":["http:\/\/anggao.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"javascript","wordcount":1088,"url":"http:\/\/anggao.github.io\/2015-09-15-javascript-note-seven\/","datePublished":"2015-09-15T00:00:00+00:00","dateModified":"2015-09-15T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":"http:\/\/anggao.github.io\/images\/avatar.png"},"author":{"@type":"Person","name":"Ang"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Ang's Blog"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>Ang's Blog</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><a class=menu-item href=/about/>About </a><a class=menu-item href=https://github.com/anggao title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Ang's Blog"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>Ang's Blog</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/posts/>Posts</a><a class=menu-item href=/tags/>Tags</a><a class=menu-item href=/categories/>Categories</a><a class=menu-item href=/about/>About</a><a class=menu-item href=https://github.com/anggao title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">JavaScript Note Seven</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Ang</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2015-09-15>2015-09-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1088 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;6 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#modules>Modules</a><ul><li><a href=#objects-as-interfaces>Objects as interfaces</a></li><li><a href=#commonjs-modules>CommonJS modules</a></li><li><a href=#evaluating-data-as-code>Evaluating data as code</a></li><li><a href=#slow-loading-modules>Slow-loading modules</a></li><li><a href=#minimal-implementation-of-define>minimal implementation of define</a></li></ul></li></ul></li></ul></nav></div></div><div class=content id=content><h3 id=modules>Modules</h3><ul><li>Though JavaScript provides no actual module construct yet, objects can be used to create publicly accessible subnamespaces, and functions can be used to create an isolated, private namespace inside of a module.</li><li>Functions are the only things in JavaScript that create a new scope.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>dayName</span> <span class=o>=</span> <span class=p>(</span><span class=kd>function</span><span class=p>()</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>names</span> <span class=o>=</span> <span class=p>[</span>
+    <span class=s2>&#34;Sunday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Monday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Tuesday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Wednesday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Thursday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Friday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Saturday&#34;</span>
+  <span class=p>];</span>
+  <span class=k>return</span> <span class=kd>function</span><span class=p>(</span><span class=nx>number</span><span class=p>)</span> <span class=p>{</span>
+    <span class=k>return</span> <span class=nx>names</span><span class=p>[</span><span class=nx>number</span><span class=p>];</span>
+  <span class=p>};</span>
+<span class=p>})();</span>
+
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>dayName</span><span class=p>(</span><span class=mi>3</span><span class=p>));</span>
+<span class=c1>// → Wednesday
+</span></code></pre></td></tr></table></div></div><h4 id=objects-as-interfaces>Objects as interfaces</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>weekDay</span> <span class=o>=</span> <span class=p>(</span><span class=kd>function</span><span class=p>()</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>names</span> <span class=o>=</span> <span class=p>[</span>
+    <span class=s2>&#34;Sunday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Monday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Tuesday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Wednesday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Thursday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Friday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Saturday&#34;</span>
+  <span class=p>];</span>
+  <span class=k>return</span> <span class=p>{</span>
+    <span class=nx>name</span><span class=o>:</span> <span class=kd>function</span><span class=p>(</span><span class=nx>number</span><span class=p>)</span> <span class=p>{</span>
+      <span class=k>return</span> <span class=nx>names</span><span class=p>[</span><span class=nx>number</span><span class=p>];</span>
+    <span class=p>},</span>
+    <span class=nx>number</span><span class=o>:</span> <span class=kd>function</span><span class=p>(</span><span class=nx>name</span><span class=p>)</span> <span class=p>{</span>
+      <span class=k>return</span> <span class=nx>names</span><span class=p>.</span><span class=nx>indexOf</span><span class=p>(</span><span class=nx>name</span><span class=p>);</span>
+    <span class=p>}</span>
+  <span class=p>};</span>
+<span class=p>})();</span>
+
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>weekDay</span><span class=p>.</span><span class=nx>name</span><span class=p>(</span><span class=nx>weekDay</span><span class=p>.</span><span class=nx>number</span><span class=p>(</span><span class=s2>&#34;Sunday&#34;</span><span class=p>)));</span>
+<span class=c1>// → Sunday
+</span></code></pre></td></tr></table></div></div><ul><li>A convenient alternative is to declare an object (conventionally named exports) and add properties to that whenever we are defining something that needs to be exported.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=p>(</span><span class=kd>function</span><span class=p>(</span><span class=nx>exports</span><span class=p>)</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>names</span> <span class=o>=</span> <span class=p>[</span>
+    <span class=s2>&#34;Sunday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Monday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Tuesday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Wednesday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Thursday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Friday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Saturday&#34;</span>
+  <span class=p>];</span>
+
+  <span class=nx>exports</span><span class=p>.</span><span class=nx>name</span> <span class=o>=</span> <span class=kd>function</span><span class=p>(</span><span class=nx>number</span><span class=p>)</span> <span class=p>{</span>
+    <span class=k>return</span> <span class=nx>names</span><span class=p>[</span><span class=nx>number</span><span class=p>];</span>
+  <span class=p>};</span>
+  <span class=nx>exports</span><span class=p>.</span><span class=nx>number</span> <span class=o>=</span> <span class=kd>function</span><span class=p>(</span><span class=nx>name</span><span class=p>)</span> <span class=p>{</span>
+    <span class=k>return</span> <span class=nx>names</span><span class=p>.</span><span class=nx>indexOf</span><span class=p>(</span><span class=nx>name</span><span class=p>);</span>
+  <span class=p>};</span>
+<span class=p>})((</span><span class=k>this</span><span class=p>.</span><span class=nx>weekDay</span> <span class=o>=</span> <span class=p>{}));</span>
+
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>weekDay</span><span class=p>.</span><span class=nx>name</span><span class=p>(</span><span class=nx>weekDay</span><span class=p>.</span><span class=nx>number</span><span class=p>(</span><span class=s2>&#34;Saturday&#34;</span><span class=p>)));</span>
+<span class=c1>// → Saturday
+</span></code></pre></td></tr></table></div></div><ul><li>The module will claim a single global variable and wrap its code in a function in order to have its own private namespace. But this pattern still causes problems if multiple modules happen to claim the same name or if you want to load two versions of a module alongside each other.</li></ul><h4 id=commonjs-modules>CommonJS modules</h4><ul><li>we can create a system that allows one module to directly ask for the interface object of another module, without going through the global scope.</li><li>Our goal is a require function that, when given a module name, will load that module’s file (from disk or the Web, depending on the platform we are running on) and return the appropriate interface value.</li><li>a function <code>readFile</code>, which returns the content of a given file as a string.</li><li>execute this string as JavaScript code</li></ul><h4 id=evaluating-data-as-code>Evaluating data as code</h4><ul><li>special operator <code>eval</code>, which will execute a string of code in the current scope. This is usually a bad idea because it breaks some of the sane properties that scopes normally have, such as being isolated from the outside world.</li><li>A better way of interpreting data as code is to use the Function constructor.</li><li>This takes two arguments: a string containing a comma-separated list of argument names and a string containing the function’s body.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>function</span> <span class=nx>require</span><span class=p>(</span><span class=nx>name</span><span class=p>)</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>code</span> <span class=o>=</span> <span class=k>new</span> <span class=nb>Function</span><span class=p>(</span><span class=s2>&#34;exports&#34;</span><span class=p>,</span> <span class=nx>readFile</span><span class=p>(</span><span class=nx>name</span><span class=p>));</span>
+  <span class=kd>var</span> <span class=nx>exports</span> <span class=o>=</span> <span class=p>{};</span>
+  <span class=nx>code</span><span class=p>(</span><span class=nx>exports</span><span class=p>);</span>
+  <span class=k>return</span> <span class=nx>exports</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>require</span><span class=p>(</span><span class=s2>&#34;weekDay&#34;</span><span class=p>).</span><span class=nx>name</span><span class=p>(</span><span class=mi>1</span><span class=p>));</span>
+<span class=c1>// → Monday
+</span></code></pre></td></tr></table></div></div><ul><li>This removes a lot of clutter from our example module.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>names</span> <span class=o>=</span> <span class=p>[</span>
+  <span class=s2>&#34;Sunday&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;Monday&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;Tuesday&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;Wednesday&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;Thursday&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;Friday&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;Saturday&#34;</span>
+<span class=p>];</span>
+
+<span class=nx>exports</span><span class=p>.</span><span class=nx>name</span> <span class=o>=</span> <span class=kd>function</span><span class=p>(</span><span class=nx>number</span><span class=p>)</span> <span class=p>{</span>
+  <span class=k>return</span> <span class=nx>names</span><span class=p>[</span><span class=nx>number</span><span class=p>];</span>
+<span class=p>};</span>
+<span class=nx>exports</span><span class=p>.</span><span class=nx>number</span> <span class=o>=</span> <span class=kd>function</span><span class=p>(</span><span class=nx>name</span><span class=p>)</span> <span class=p>{</span>
+  <span class=k>return</span> <span class=nx>names</span><span class=p>.</span><span class=nx>indexOf</span><span class=p>(</span><span class=nx>name</span><span class=p>);</span>
+<span class=p>};</span>
+</code></pre></td></tr></table></div></div><ul><li>When using this pattern, a module typically starts with a few variable declarations that load the modules it depends on.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>weekDay</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;weekDay&#34;</span><span class=p>);</span>
+<span class=kd>var</span> <span class=nx>today</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;today&#34;</span><span class=p>);</span>
+
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>weekDay</span><span class=p>.</span><span class=nx>name</span><span class=p>(</span><span class=nx>today</span><span class=p>.</span><span class=nx>dayNumber</span><span class=p>()));</span>
+</code></pre></td></tr></table></div></div><ul><li>The simplistic implementation of require given previously has several problems</li><li>it will load and run a module every time it is required</li><li>it is not possible for a module to directly export a value other than the exports object, such as a function</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>function</span> <span class=nx>require</span><span class=p>(</span><span class=nx>name</span><span class=p>)</span> <span class=p>{</span>
+  <span class=k>if</span> <span class=p>(</span><span class=nx>name</span> <span class=k>in</span> <span class=nx>require</span><span class=p>.</span><span class=nx>cache</span><span class=p>)</span> <span class=k>return</span> <span class=nx>require</span><span class=p>.</span><span class=nx>cache</span><span class=p>[</span><span class=nx>name</span><span class=p>];</span>
+
+  <span class=kd>var</span> <span class=nx>code</span> <span class=o>=</span> <span class=k>new</span> <span class=nb>Function</span><span class=p>(</span><span class=s2>&#34;exports, module&#34;</span><span class=p>,</span> <span class=nx>readFile</span><span class=p>(</span><span class=nx>name</span><span class=p>));</span>
+  <span class=kd>var</span> <span class=nx>exports</span> <span class=o>=</span> <span class=p>{},</span>
+    <span class=nx>module</span> <span class=o>=</span> <span class=p>{</span> <span class=nx>exports</span><span class=o>:</span> <span class=nx>exports</span> <span class=p>};</span>
+  <span class=nx>code</span><span class=p>(</span><span class=nx>exports</span><span class=p>,</span> <span class=nx>module</span><span class=p>);</span>
+
+  <span class=nx>require</span><span class=p>.</span><span class=nx>cache</span><span class=p>[</span><span class=nx>name</span><span class=p>]</span> <span class=o>=</span> <span class=nx>module</span><span class=p>.</span><span class=nx>exports</span><span class=p>;</span>
+  <span class=k>return</span> <span class=nx>module</span><span class=p>.</span><span class=nx>exports</span><span class=p>;</span>
+<span class=p>}</span>
+<span class=nx>require</span><span class=p>.</span><span class=nx>cache</span> <span class=o>=</span> <span class=nb>Object</span><span class=p>.</span><span class=nx>create</span><span class=p>(</span><span class=kc>null</span><span class=p>);</span>
+</code></pre></td></tr></table></div></div><h4 id=slow-loading-modules>Slow-loading modules</h4><ul><li>Though it is possible to use the CommonJS module style when writing JavaScript for the browser, it is somewhat involved. The reason for this is that reading a file (module) from the Web is a lot slower than reading it from the hard disk</li><li>One way to work around this problem is to run a program like <code>Browserify</code> on your code before you serve it on a web page.</li><li>Another solution is to wrap the code that makes up your module in a function so that the module loader can first load its dependencies in the background and then call the function, initializing the module, when the dependencies have been loaded. That is what the <code>Asynchronous Module Definition (AMD)</code> module system does.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=nx>define</span><span class=p>([</span><span class=s2>&#34;weekDay&#34;</span><span class=p>,</span> <span class=s2>&#34;today&#34;</span><span class=p>],</span> <span class=kd>function</span><span class=p>(</span><span class=nx>weekDay</span><span class=p>,</span> <span class=nx>today</span><span class=p>)</span> <span class=p>{</span>
+  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>weekDay</span><span class=p>.</span><span class=nx>name</span><span class=p>(</span><span class=nx>today</span><span class=p>.</span><span class=nx>dayNumber</span><span class=p>()));</span>
+<span class=p>});</span>
+
+<span class=nx>define</span><span class=p>([],</span> <span class=kd>function</span><span class=p>()</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>names</span> <span class=o>=</span> <span class=p>[</span>
+    <span class=s2>&#34;Sunday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Monday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Tuesday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Wednesday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Thursday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Friday&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;Saturday&#34;</span>
+  <span class=p>];</span>
+  <span class=k>return</span> <span class=p>{</span>
+    <span class=nx>name</span><span class=o>:</span> <span class=kd>function</span><span class=p>(</span><span class=nx>number</span><span class=p>)</span> <span class=p>{</span>
+      <span class=k>return</span> <span class=nx>names</span><span class=p>[</span><span class=nx>number</span><span class=p>];</span>
+    <span class=p>},</span>
+    <span class=nx>number</span><span class=o>:</span> <span class=kd>function</span><span class=p>(</span><span class=nx>name</span><span class=p>)</span> <span class=p>{</span>
+      <span class=k>return</span> <span class=nx>names</span><span class=p>.</span><span class=nx>indexOf</span><span class=p>(</span><span class=nx>name</span><span class=p>);</span>
+    <span class=p>}</span>
+  <span class=p>};</span>
+<span class=p>});</span>
+</code></pre></td></tr></table></div></div><h4 id=minimal-implementation-of-define>minimal implementation of define</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>defineCache</span> <span class=o>=</span> <span class=nb>Object</span><span class=p>.</span><span class=nx>create</span><span class=p>(</span><span class=kc>null</span><span class=p>);</span>
+<span class=kd>var</span> <span class=nx>currentMod</span> <span class=o>=</span> <span class=kc>null</span><span class=p>;</span>
+
+<span class=kd>function</span> <span class=nx>getModule</span><span class=p>(</span><span class=nx>name</span><span class=p>)</span> <span class=p>{</span>
+  <span class=k>if</span> <span class=p>(</span><span class=nx>name</span> <span class=k>in</span> <span class=nx>defineCache</span><span class=p>)</span> <span class=k>return</span> <span class=nx>defineCache</span><span class=p>[</span><span class=nx>name</span><span class=p>];</span>
+
+  <span class=kd>var</span> <span class=nx>module</span> <span class=o>=</span> <span class=p>{</span> <span class=nx>exports</span><span class=o>:</span> <span class=kc>null</span><span class=p>,</span> <span class=nx>loaded</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span> <span class=nx>onLoad</span><span class=o>:</span> <span class=p>[]</span> <span class=p>};</span>
+  <span class=nx>defineCache</span><span class=p>[</span><span class=nx>name</span><span class=p>]</span> <span class=o>=</span> <span class=nx>module</span><span class=p>;</span>
+  <span class=nx>backgroundReadFile</span><span class=p>(</span><span class=nx>name</span><span class=p>,</span> <span class=kd>function</span><span class=p>(</span><span class=nx>code</span><span class=p>)</span> <span class=p>{</span>
+    <span class=nx>currentMod</span> <span class=o>=</span> <span class=nx>module</span><span class=p>;</span>
+    <span class=k>new</span> <span class=nb>Function</span><span class=p>(</span><span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=nx>code</span><span class=p>)();</span>
+  <span class=p>});</span>
+  <span class=k>return</span> <span class=nx>module</span><span class=p>;</span>
+<span class=p>}</span>
+</code></pre></td></tr></table></div></div><ul><li>The <code>define</code> function itself uses <code>getModule</code> to fetch or create the module objects for the current module’s dependencies.</li><li>Its task is to schedule the <code>moduleFunction</code> (the function that contains the module’s actual code) to be run whenever those dependencies are loaded.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>function</span> <span class=nx>define</span><span class=p>(</span><span class=nx>depNames</span><span class=p>,</span> <span class=nx>moduleFunction</span><span class=p>)</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>myMod</span> <span class=o>=</span> <span class=nx>currentMod</span><span class=p>;</span>
+  <span class=kd>var</span> <span class=nx>deps</span> <span class=o>=</span> <span class=nx>depNames</span><span class=p>.</span><span class=nx>map</span><span class=p>(</span><span class=nx>getModule</span><span class=p>);</span>
+
+  <span class=nx>deps</span><span class=p>.</span><span class=nx>forEach</span><span class=p>(</span><span class=kd>function</span><span class=p>(</span><span class=nx>mod</span><span class=p>)</span> <span class=p>{</span>
+    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=nx>mod</span><span class=p>.</span><span class=nx>loaded</span><span class=p>)</span> <span class=nx>mod</span><span class=p>.</span><span class=nx>onLoad</span><span class=p>.</span><span class=nx>push</span><span class=p>(</span><span class=nx>whenDepsLoaded</span><span class=p>);</span>
+  <span class=p>});</span>
+
+  <span class=kd>function</span> <span class=nx>whenDepsLoaded</span><span class=p>()</span> <span class=p>{</span>
+    <span class=k>if</span> <span class=p>(</span>
+      <span class=o>!</span><span class=nx>deps</span><span class=p>.</span><span class=nx>every</span><span class=p>(</span><span class=kd>function</span><span class=p>(</span><span class=nx>m</span><span class=p>)</span> <span class=p>{</span>
+        <span class=k>return</span> <span class=nx>m</span><span class=p>.</span><span class=nx>loaded</span><span class=p>;</span>
+      <span class=p>})</span>
+    <span class=p>)</span>
+      <span class=k>return</span><span class=p>;</span>
+
+    <span class=kd>var</span> <span class=nx>args</span> <span class=o>=</span> <span class=nx>deps</span><span class=p>.</span><span class=nx>map</span><span class=p>(</span><span class=kd>function</span><span class=p>(</span><span class=nx>m</span><span class=p>)</span> <span class=p>{</span>
+      <span class=k>return</span> <span class=nx>m</span><span class=p>.</span><span class=nx>exports</span><span class=p>;</span>
+    <span class=p>});</span>
+    <span class=kd>var</span> <span class=nx>exports</span> <span class=o>=</span> <span class=nx>moduleFunction</span><span class=p>.</span><span class=nx>apply</span><span class=p>(</span><span class=kc>null</span><span class=p>,</span> <span class=nx>args</span><span class=p>);</span>
+    <span class=k>if</span> <span class=p>(</span><span class=nx>myMod</span><span class=p>)</span> <span class=p>{</span>
+      <span class=nx>myMod</span><span class=p>.</span><span class=nx>exports</span> <span class=o>=</span> <span class=nx>exports</span><span class=p>;</span>
+      <span class=nx>myMod</span><span class=p>.</span><span class=nx>loaded</span> <span class=o>=</span> <span class=kc>true</span><span class=p>;</span>
+      <span class=nx>myMod</span><span class=p>.</span><span class=nx>onLoad</span><span class=p>.</span><span class=nx>forEach</span><span class=p>(</span><span class=kd>function</span><span class=p>(</span><span class=nx>f</span><span class=p>)</span> <span class=p>{</span>
+        <span class=nx>f</span><span class=p>();</span>
+      <span class=p>});</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+  <span class=nx>whenDepsLoaded</span><span class=p>();</span>
+<span class=p>}</span>
+</code></pre></td></tr></table></div></div><ul><li>There are two popular, well-defined approaches to such modules.</li><li>CommonJS Modules and revolves around a require function that fetches a module by name and returns its interface.</li><li>AMD and uses a define function that takes an array of module names and a function and, after loading the modules, runs the function with their interfaces as arguments.</li></ul></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2015-09-15</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/2015-09-15-javascript-note-seven/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=http://anggao.github.io/2015-09-15-javascript-note-seven/ data-title="JavaScript Note Seven" data-via=anggao data-hashtags=javascript><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=http://anggao.github.io/2015-09-15-javascript-note-seven/ data-hashtag=javascript><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=http://anggao.github.io/2015-09-15-javascript-note-seven/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=http://anggao.github.io/2015-09-15-javascript-note-seven/ data-title="JavaScript Note Seven"><i class="fab fa-hacker-news fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/javascript/>javascript</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/2015-09-09-javascript-note-six/ class=prev rel=prev title="JavaScript Note Six"><i class="fas fa-angle-left fa-fw"></i>JavaScript Note Six</a>
+<a href=/2015-09-17-docker-note-one/ class=next rel=next title="Docker Note One">Docker Note One<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.74.3">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2013 - 2020</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>Ang</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','UA-34162724-1',{'anonymize_ip':true});</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-34162724-1" async></script></body></html>

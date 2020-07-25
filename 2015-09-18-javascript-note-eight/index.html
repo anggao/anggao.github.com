@@ -1,0 +1,165 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>JavaScript Note Eight - Ang's Blog</title><meta name=Description content="Ang's Blog"><meta property="og:title" content="JavaScript Note Eight"><meta property="og:description" content="Project: A Programming Language  We will build a programming language called Egg. Everything in Egg is an expression. An expression can be a variable, a number, a string, or an application. Applications are used for function calls but also for constructs such as if or while. And since the syntax has no concept of a block, we need a do construct to represent doing multiple things in sequence. The data structure that the parser will use to describe a program will consist of expression objects, each of which has a type property indicating the kind of expression it is and other properties to describe its content."><meta property="og:type" content="article"><meta property="og:url" content="http://anggao.github.io/2015-09-18-javascript-note-eight/"><meta property="og:image" content="http://anggao.github.io/logo.png"><meta property="article:published_time" content="2015-09-18T00:00:00+00:00"><meta property="article:modified_time" content="2015-09-18T00:00:00+00:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://anggao.github.io/logo.png"><meta name=twitter:title content="JavaScript Note Eight"><meta name=twitter:description content="Project: A Programming Language  We will build a programming language called Egg. Everything in Egg is an expression. An expression can be a variable, a number, a string, or an application. Applications are used for function calls but also for constructs such as if or while. And since the syntax has no concept of a block, we need a do construct to represent doing multiple things in sequence. The data structure that the parser will use to describe a program will consist of expression objects, each of which has a type property indicating the kind of expression it is and other properties to describe its content."><meta name=application-name content="Ang's Blog"><meta name=apple-mobile-web-app-title content="Ang's Blog"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://anggao.github.io/2015-09-18-javascript-note-eight/><link rel=prev href=http://anggao.github.io/2015-09-17-docker-note-one/><link rel=next href=http://anggao.github.io/2015-09-19-javascript-note-nine/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"JavaScript Note Eight","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/anggao.github.io\/2015-09-18-javascript-note-eight\/"},"image":["http:\/\/anggao.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"javascript","wordcount":480,"url":"http:\/\/anggao.github.io\/2015-09-18-javascript-note-eight\/","datePublished":"2015-09-18T00:00:00+00:00","dateModified":"2015-09-18T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":"http:\/\/anggao.github.io\/images\/avatar.png"},"author":{"@type":"Person","name":"Ang"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Ang's Blog"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>Ang's Blog</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><a class=menu-item href=/about/>About </a><a class=menu-item href=https://github.com/anggao title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Ang's Blog"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>Ang's Blog</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/posts/>Posts</a><a class=menu-item href=/tags/>Tags</a><a class=menu-item href=/categories/>Categories</a><a class=menu-item href=/about/>About</a><a class=menu-item href=https://github.com/anggao title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">JavaScript Note Eight</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Ang</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2015-09-18>2015-09-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;480 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#project-a-programming-language>Project: A Programming Language</a></li></ul></li></ul></nav></div></div><div class=content id=content><h3 id=project-a-programming-language>Project: A Programming Language</h3><ul><li>We will build a programming language called Egg.</li><li>Everything in Egg is an expression.</li><li>An expression can be a variable, a <code>number</code>, a <code>string</code>, or an <code>application</code>.</li><li>Applications are used for function calls but also for constructs such as if or while.</li><li>And since the syntax has no concept of a block, we need a <code>do</code> construct to represent doing multiple things in sequence.</li><li>The data structure that the parser will use to describe a program will consist of expression objects, each of which has a type property indicating the kind of expression it is and other properties to describe its content.</li><li>The <code>>(x, 5)</code> part of the program would be represented like this:</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=p>{</span>
+  <span class=nx>type</span><span class=o>:</span> <span class=s2>&#34;apply&#34;</span><span class=p>,</span>
+  <span class=nx>operator</span><span class=o>:</span> <span class=p>{</span><span class=nx>type</span><span class=o>:</span> <span class=s2>&#34;word&#34;</span><span class=p>,</span> <span class=nx>name</span><span class=o>:</span> <span class=s2>&#34;&gt;&#34;</span><span class=p>},</span>
+  <span class=nx>args</span><span class=o>:</span> <span class=p>[</span>
+    <span class=p>{</span><span class=nx>type</span><span class=o>:</span> <span class=s2>&#34;word&#34;</span><span class=p>,</span> <span class=nx>name</span><span class=o>:</span> <span class=s2>&#34;x&#34;</span><span class=p>},</span>
+    <span class=p>{</span><span class=nx>type</span><span class=o>:</span> <span class=s2>&#34;value&#34;</span><span class=p>,</span> <span class=nx>value</span><span class=o>:</span> <span class=mi>5</span><span class=p>}</span>
+  <span class=p>]</span>
+<span class=p>}</span>
+</code></pre></td></tr></table></div></div><ul><li>This is the parser</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>function</span> <span class=nx>parseExpression</span><span class=p>(</span><span class=nx>program</span><span class=p>)</span> <span class=p>{</span>
+  <span class=nx>program</span> <span class=o>=</span> <span class=nx>skipSpace</span><span class=p>(</span><span class=nx>program</span><span class=p>);</span>
+  <span class=kd>var</span> <span class=nx>match</span><span class=p>,</span> <span class=nx>expr</span><span class=p>;</span>
+  <span class=k>if</span> <span class=p>((</span><span class=nx>match</span> <span class=o>=</span> <span class=sr>/^&#34;([^&#34;]*)&#34;/</span><span class=p>.</span><span class=nx>exec</span><span class=p>(</span><span class=nx>program</span><span class=p>)))</span>
+    <span class=nx>expr</span> <span class=o>=</span> <span class=p>{</span> <span class=nx>type</span><span class=o>:</span> <span class=s2>&#34;value&#34;</span><span class=p>,</span> <span class=nx>value</span><span class=o>:</span> <span class=nx>match</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=p>};</span>
+  <span class=k>else</span> <span class=k>if</span> <span class=p>((</span><span class=nx>match</span> <span class=o>=</span> <span class=sr>/^\d+\b/</span><span class=p>.</span><span class=nx>exec</span><span class=p>(</span><span class=nx>program</span><span class=p>)))</span>
+    <span class=nx>expr</span> <span class=o>=</span> <span class=p>{</span> <span class=nx>type</span><span class=o>:</span> <span class=s2>&#34;value&#34;</span><span class=p>,</span> <span class=nx>value</span><span class=o>:</span> <span class=nb>Number</span><span class=p>(</span><span class=nx>match</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=p>};</span>
+  <span class=k>else</span> <span class=k>if</span> <span class=p>((</span><span class=nx>match</span> <span class=o>=</span> <span class=sr>/^[^\s(),&#34;]+/</span><span class=p>.</span><span class=nx>exec</span><span class=p>(</span><span class=nx>program</span><span class=p>)))</span>
+    <span class=nx>expr</span> <span class=o>=</span> <span class=p>{</span> <span class=nx>type</span><span class=o>:</span> <span class=s2>&#34;word&#34;</span><span class=p>,</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>match</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=p>};</span>
+  <span class=k>else</span> <span class=k>throw</span> <span class=k>new</span> <span class=nx>SyntaxError</span><span class=p>(</span><span class=s2>&#34;Unexpected syntax: &#34;</span> <span class=o>+</span> <span class=nx>program</span><span class=p>);</span>
+
+  <span class=k>return</span> <span class=nx>parseApply</span><span class=p>(</span><span class=nx>expr</span><span class=p>,</span> <span class=nx>program</span><span class=p>.</span><span class=nx>slice</span><span class=p>(</span><span class=nx>match</span><span class=p>[</span><span class=mi>0</span><span class=p>].</span><span class=nx>length</span><span class=p>));</span>
+<span class=p>}</span>
+
+<span class=kd>function</span> <span class=nx>skipSpace</span><span class=p>(</span><span class=nx>string</span><span class=p>)</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>first</span> <span class=o>=</span> <span class=nx>string</span><span class=p>.</span><span class=nx>search</span><span class=p>(</span><span class=sr>/\S/</span><span class=p>);</span>
+  <span class=k>if</span> <span class=p>(</span><span class=nx>first</span> <span class=o>==</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span> <span class=k>return</span> <span class=s2>&#34;&#34;</span><span class=p>;</span>
+  <span class=k>return</span> <span class=nx>string</span><span class=p>.</span><span class=nx>slice</span><span class=p>(</span><span class=nx>first</span><span class=p>);</span>
+<span class=p>}</span>
+
+<span class=kd>function</span> <span class=nx>parseApply</span><span class=p>(</span><span class=nx>expr</span><span class=p>,</span> <span class=nx>program</span><span class=p>)</span> <span class=p>{</span>
+  <span class=nx>program</span> <span class=o>=</span> <span class=nx>skipSpace</span><span class=p>(</span><span class=nx>program</span><span class=p>);</span>
+  <span class=k>if</span> <span class=p>(</span><span class=nx>program</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>!=</span> <span class=s2>&#34;(&#34;</span><span class=p>)</span> <span class=k>return</span> <span class=p>{</span> <span class=nx>expr</span><span class=o>:</span> <span class=nx>expr</span><span class=p>,</span> <span class=nx>rest</span><span class=o>:</span> <span class=nx>program</span> <span class=p>};</span>
+
+  <span class=nx>program</span> <span class=o>=</span> <span class=nx>skipSpace</span><span class=p>(</span><span class=nx>program</span><span class=p>.</span><span class=nx>slice</span><span class=p>(</span><span class=mi>1</span><span class=p>));</span>
+  <span class=nx>expr</span> <span class=o>=</span> <span class=p>{</span> <span class=nx>type</span><span class=o>:</span> <span class=s2>&#34;apply&#34;</span><span class=p>,</span> <span class=nx>operator</span><span class=o>:</span> <span class=nx>expr</span><span class=p>,</span> <span class=nx>args</span><span class=o>:</span> <span class=p>[]</span> <span class=p>};</span>
+  <span class=k>while</span> <span class=p>(</span><span class=nx>program</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>!=</span> <span class=s2>&#34;)&#34;</span><span class=p>)</span> <span class=p>{</span>
+    <span class=kd>var</span> <span class=nx>arg</span> <span class=o>=</span> <span class=nx>parseExpression</span><span class=p>(</span><span class=nx>program</span><span class=p>);</span>
+    <span class=nx>expr</span><span class=p>.</span><span class=nx>args</span><span class=p>.</span><span class=nx>push</span><span class=p>(</span><span class=nx>arg</span><span class=p>.</span><span class=nx>expr</span><span class=p>);</span>
+    <span class=nx>program</span> <span class=o>=</span> <span class=nx>skipSpace</span><span class=p>(</span><span class=nx>arg</span><span class=p>.</span><span class=nx>rest</span><span class=p>);</span>
+    <span class=k>if</span> <span class=p>(</span><span class=nx>program</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=s2>&#34;,&#34;</span><span class=p>)</span> <span class=nx>program</span> <span class=o>=</span> <span class=nx>skipSpace</span><span class=p>(</span><span class=nx>program</span><span class=p>.</span><span class=nx>slice</span><span class=p>(</span><span class=mi>1</span><span class=p>));</span>
+    <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=nx>program</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>!=</span> <span class=s2>&#34;)&#34;</span><span class=p>)</span> <span class=k>throw</span> <span class=k>new</span> <span class=nx>SyntaxError</span><span class=p>(</span><span class=s2>&#34;Expected &#39;,&#39; or &#39;)&#39;&#34;</span><span class=p>);</span>
+  <span class=p>}</span>
+  <span class=k>return</span> <span class=nx>parseApply</span><span class=p>(</span><span class=nx>expr</span><span class=p>,</span> <span class=nx>program</span><span class=p>.</span><span class=nx>slice</span><span class=p>(</span><span class=mi>1</span><span class=p>));</span>
+<span class=p>}</span>
+
+<span class=kd>function</span> <span class=nx>parse</span><span class=p>(</span><span class=nx>program</span><span class=p>)</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>result</span> <span class=o>=</span> <span class=nx>parseExpression</span><span class=p>(</span><span class=nx>program</span><span class=p>);</span>
+  <span class=k>if</span> <span class=p>(</span><span class=nx>skipSpace</span><span class=p>(</span><span class=nx>result</span><span class=p>.</span><span class=nx>rest</span><span class=p>).</span><span class=nx>length</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=k>throw</span> <span class=k>new</span> <span class=nx>SyntaxError</span><span class=p>(</span><span class=s2>&#34;Unexpected text after program&#34;</span><span class=p>);</span>
+  <span class=k>return</span> <span class=nx>result</span><span class=p>.</span><span class=nx>expr</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>parse</span><span class=p>(</span><span class=s2>&#34;+(a, 10)&#34;</span><span class=p>));</span>
+<span class=c1>// → {type: &#34;apply&#34;,
+</span><span class=c1>//    operator: {type: &#34;word&#34;, name: &#34;+&#34;},
+</span><span class=c1>//    args: [{type: &#34;word&#34;, name: &#34;a&#34;},
+</span><span class=c1>//           {type: &#34;value&#34;, value: 10}]}
+</span></code></pre></td></tr></table></div></div><ul><li>The evaluator</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>function</span> <span class=nx>evaluate</span><span class=p>(</span><span class=nx>expr</span><span class=p>,</span> <span class=nx>env</span><span class=p>)</span> <span class=p>{</span>
+  <span class=k>switch</span> <span class=p>(</span><span class=nx>expr</span><span class=p>.</span><span class=nx>type</span><span class=p>)</span> <span class=p>{</span>
+    <span class=k>case</span> <span class=s2>&#34;value&#34;</span><span class=o>:</span>
+      <span class=k>return</span> <span class=nx>expr</span><span class=p>.</span><span class=nx>value</span><span class=p>;</span>
+
+    <span class=k>case</span> <span class=s2>&#34;word&#34;</span><span class=o>:</span>
+      <span class=k>if</span> <span class=p>(</span><span class=nx>expr</span><span class=p>.</span><span class=nx>name</span> <span class=k>in</span> <span class=nx>env</span><span class=p>)</span> <span class=k>return</span> <span class=nx>env</span><span class=p>[</span><span class=nx>expr</span><span class=p>.</span><span class=nx>name</span><span class=p>];</span>
+      <span class=k>else</span> <span class=k>throw</span> <span class=k>new</span> <span class=nx>ReferenceError</span><span class=p>(</span><span class=s2>&#34;Undefined variable: &#34;</span> <span class=o>+</span> <span class=nx>expr</span><span class=p>.</span><span class=nx>name</span><span class=p>);</span>
+    <span class=k>case</span> <span class=s2>&#34;apply&#34;</span><span class=o>:</span>
+      <span class=k>if</span> <span class=p>(</span><span class=nx>expr</span><span class=p>.</span><span class=nx>operator</span><span class=p>.</span><span class=nx>type</span> <span class=o>==</span> <span class=s2>&#34;word&#34;</span> <span class=o>&amp;&amp;</span> <span class=nx>expr</span><span class=p>.</span><span class=nx>operator</span><span class=p>.</span><span class=nx>name</span> <span class=k>in</span> <span class=nx>specialForms</span><span class=p>)</span>
+        <span class=k>return</span> <span class=nx>specialForms</span><span class=p>[</span><span class=nx>expr</span><span class=p>.</span><span class=nx>operator</span><span class=p>.</span><span class=nx>name</span><span class=p>](</span><span class=nx>expr</span><span class=p>.</span><span class=nx>args</span><span class=p>,</span> <span class=nx>env</span><span class=p>);</span>
+      <span class=kd>var</span> <span class=nx>op</span> <span class=o>=</span> <span class=nx>evaluate</span><span class=p>(</span><span class=nx>expr</span><span class=p>.</span><span class=nx>operator</span><span class=p>,</span> <span class=nx>env</span><span class=p>);</span>
+      <span class=k>if</span> <span class=p>(</span><span class=k>typeof</span> <span class=nx>op</span> <span class=o>!=</span> <span class=s2>&#34;function&#34;</span><span class=p>)</span>
+        <span class=k>throw</span> <span class=k>new</span> <span class=nx>TypeError</span><span class=p>(</span><span class=s2>&#34;Applying a non-function.&#34;</span><span class=p>);</span>
+      <span class=k>return</span> <span class=nx>op</span><span class=p>.</span><span class=nx>apply</span><span class=p>(</span>
+        <span class=kc>null</span><span class=p>,</span>
+        <span class=nx>expr</span><span class=p>.</span><span class=nx>args</span><span class=p>.</span><span class=nx>map</span><span class=p>(</span><span class=kd>function</span><span class=p>(</span><span class=nx>arg</span><span class=p>)</span> <span class=p>{</span>
+          <span class=k>return</span> <span class=nx>evaluate</span><span class=p>(</span><span class=nx>arg</span><span class=p>,</span> <span class=nx>env</span><span class=p>);</span>
+        <span class=p>})</span>
+      <span class=p>);</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+
+<span class=kd>var</span> <span class=nx>specialForms</span> <span class=o>=</span> <span class=nb>Object</span><span class=p>.</span><span class=nx>create</span><span class=p>(</span><span class=kc>null</span><span class=p>);</span>
+</code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2015-09-18</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/2015-09-18-javascript-note-eight/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=http://anggao.github.io/2015-09-18-javascript-note-eight/ data-title="JavaScript Note Eight" data-via=anggao data-hashtags=javascript><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=http://anggao.github.io/2015-09-18-javascript-note-eight/ data-hashtag=javascript><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=http://anggao.github.io/2015-09-18-javascript-note-eight/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=http://anggao.github.io/2015-09-18-javascript-note-eight/ data-title="JavaScript Note Eight"><i class="fab fa-hacker-news fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/javascript/>javascript</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/2015-09-17-docker-note-one/ class=prev rel=prev title="Docker Note One"><i class="fas fa-angle-left fa-fw"></i>Docker Note One</a>
+<a href=/2015-09-19-javascript-note-nine/ class=next rel=next title="JavaScript Note Nine">JavaScript Note Nine<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.74.3">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2013 - 2020</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>Ang</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','UA-34162724-1',{'anonymize_ip':true});</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-34162724-1" async></script></body></html>

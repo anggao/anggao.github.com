@@ -1,0 +1,103 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Hadoop: HDFS Shell Commands - Ang's Blog</title><meta name=Description content="Ang's Blog"><meta property="og:title" content="Hadoop: HDFS Shell Commands"><meta property="og:description" content="1 2 3 4 5 6  bin/hdfs dfs run a filesystem command on the file systems supported in Hadoop. dfsadmin run a DFS admin client fsck run a DFS filesystem checking utility balancer run a cluster balancing utility   1 2 3 4 5 6 7  bin/hdfs dfsadmin [-safemode <enter | leave | get | wait>] [-saveNamespace] [-refreshNodes] [-setQuota <quota> <dirname>...<dirname>] [-setSpaceQuota <quota> <dirname>...<dirname>]   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  anggao@ubuntu:~/hadoop-2."><meta property="og:type" content="article"><meta property="og:url" content="http://anggao.github.io/2015-06-22-hadoop-hdfs-shell-commands/"><meta property="og:image" content="http://anggao.github.io/logo.png"><meta property="article:published_time" content="2015-06-22T00:00:00+00:00"><meta property="article:modified_time" content="2015-06-22T00:00:00+00:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://anggao.github.io/logo.png"><meta name=twitter:title content="Hadoop: HDFS Shell Commands"><meta name=twitter:description content="1 2 3 4 5 6  bin/hdfs dfs run a filesystem command on the file systems supported in Hadoop. dfsadmin run a DFS admin client fsck run a DFS filesystem checking utility balancer run a cluster balancing utility   1 2 3 4 5 6 7  bin/hdfs dfsadmin [-safemode <enter | leave | get | wait>] [-saveNamespace] [-refreshNodes] [-setQuota <quota> <dirname>...<dirname>] [-setSpaceQuota <quota> <dirname>...<dirname>]   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  anggao@ubuntu:~/hadoop-2."><meta name=application-name content="Ang's Blog"><meta name=apple-mobile-web-app-title content="Ang's Blog"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://anggao.github.io/2015-06-22-hadoop-hdfs-shell-commands/><link rel=prev href=http://anggao.github.io/2015-06-21-hadoop-setting-up-a-single-node-cluster/><link rel=next href=http://anggao.github.io/2015-06-23-apache-oozie-installation-on-ubuntu/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Hadoop: HDFS Shell Commands","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/anggao.github.io\/2015-06-22-hadoop-hdfs-shell-commands\/"},"image":["http:\/\/anggao.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"hadoop","wordcount":266,"url":"http:\/\/anggao.github.io\/2015-06-22-hadoop-hdfs-shell-commands\/","datePublished":"2015-06-22T00:00:00+00:00","dateModified":"2015-06-22T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":"http:\/\/anggao.github.io\/images\/avatar.png"},"author":{"@type":"Person","name":"Ang"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Ang's Blog"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>Ang's Blog</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><a class=menu-item href=/about/>About </a><a class=menu-item href=https://github.com/anggao title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Ang's Blog"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>Ang's Blog</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/posts/>Posts</a><a class=menu-item href=/tags/>Tags</a><a class=menu-item href=/categories/>Categories</a><a class=menu-item href=/about/>About</a><a class=menu-item href=https://github.com/anggao title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Hadoop: HDFS Shell Commands</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Ang</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2015-06-22>2015-06-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;266 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents></nav></div></div><div class=content id=content><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>bin/hdfs
+
+dfs                  run a filesystem <span class=nb>command</span> on the file systems supported in Hadoop.
+dfsadmin             run a DFS admin client
+fsck                 run a DFS filesystem checking utility
+balancer             run a cluster balancing utility
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>bin/hdfs dfsadmin
+
+<span class=o>[</span>-safemode &lt;enter <span class=p>|</span> leave <span class=p>|</span> get <span class=p>|</span> wait&gt;<span class=o>]</span>
+<span class=o>[</span>-saveNamespace<span class=o>]</span>
+<span class=o>[</span>-refreshNodes<span class=o>]</span>
+<span class=o>[</span>-setQuota &lt;quota&gt; &lt;dirname&gt;...&lt;dirname&gt;<span class=o>]</span>
+<span class=o>[</span>-setSpaceQuota &lt;quota&gt; &lt;dirname&gt;...&lt;dirname&gt;<span class=o>]</span>
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>anggao@ubuntu:~/hadoop-2.6.0$ bin/hdfs fsck /home/anggao/README.txt -files -blocks -locations
+Connecting to namenode via http://YARN001:50070
+FSCK started by anggao <span class=o>(</span>auth:SIMPLE<span class=o>)</span> from /127.0.0.1 <span class=k>for</span> path /home/anggao/README.txt at Mon Jun <span class=m>22</span> 06:14:12 PDT <span class=m>2015</span>
+/home/anggao/README.txt <span class=m>1366</span> bytes, <span class=m>1</span> block<span class=o>(</span>s<span class=o>)</span>:  OK
+0. BP-1141233259-127.0.1.1-1434973068459:blk_1073741825_1001 <span class=nv>len</span><span class=o>=</span><span class=m>1366</span> <span class=nv>repl</span><span class=o>=</span><span class=m>1</span> <span class=o>[</span>127.0.0.1:50010<span class=o>]</span>
+
+Status: HEALTHY
+ Total size:    <span class=m>1366</span> B
+ Total dirs:    <span class=m>0</span>
+ Total files:   <span class=m>1</span>
+ Total symlinks:                <span class=m>0</span>
+ Total blocks <span class=o>(</span>validated<span class=o>)</span>:      <span class=m>1</span> <span class=o>(</span>avg. block size <span class=m>1366</span> B<span class=o>)</span>
+ Minimally replicated blocks:   <span class=m>1</span> <span class=o>(</span>100.0 %<span class=o>)</span>
+ Over-replicated blocks:        <span class=m>0</span> <span class=o>(</span>0.0 %<span class=o>)</span>
+ Under-replicated blocks:       <span class=m>0</span> <span class=o>(</span>0.0 %<span class=o>)</span>
+ Mis-replicated blocks:         <span class=m>0</span> <span class=o>(</span>0.0 %<span class=o>)</span>
+ Default replication factor:    <span class=m>1</span>
+ Average block replication:     1.0
+ Corrupt blocks:                <span class=m>0</span>
+ Missing replicas:              <span class=m>0</span> <span class=o>(</span>0.0 %<span class=o>)</span>
+ Number of data-nodes:          <span class=m>1</span>
+ Number of racks:               <span class=m>1</span>
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sbin/start-balancer.sh -threshold &lt;precentage of disk capacity&gt;
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-xml data-lang=xml># Add datanode
+Step 1: copy hadoop package and confige files to the new datanode.
+Step 2: start new datanode:
+sbin/hadoop-deamon.sh start datanode
+
+# Remove datanode
+Step 1: add datanode(ip/host) to the blacklist:
+    in the NadeNode hdfs-site.xml, defines the location of the blacklist
+    <span class=nt>&lt;property&gt;</span>
+        <span class=nt>&lt;name&gt;</span>dfs.hosts.exclude<span class=nt>&lt;/name&gt;</span>
+        <span class=nt>&lt;value&gt;</span>/etc/hadoop/conf/dfs.exclude<span class=nt>&lt;/value&gt;</span>
+    <span class=nt>&lt;/property&gt;</span>
+Step 2: bin/hadoop dfsadmin -refreshNodes
+</code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2015-06-22</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/2015-06-22-hadoop-hdfs-shell-commands/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=http://anggao.github.io/2015-06-22-hadoop-hdfs-shell-commands/ data-title="Hadoop: HDFS Shell Commands" data-via=anggao data-hashtags=hadoop><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=http://anggao.github.io/2015-06-22-hadoop-hdfs-shell-commands/ data-hashtag=hadoop><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=http://anggao.github.io/2015-06-22-hadoop-hdfs-shell-commands/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=http://anggao.github.io/2015-06-22-hadoop-hdfs-shell-commands/ data-title="Hadoop: HDFS Shell Commands"><i class="fab fa-hacker-news fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/hadoop/>hadoop</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/2015-06-21-hadoop-setting-up-a-single-node-cluster/ class=prev rel=prev title="Hadoop: Setting up a Single Node Cluster"><i class="fas fa-angle-left fa-fw"></i>Hadoop: Setting up a Single Node Cluster</a>
+<a href=/2015-06-23-apache-oozie-installation-on-ubuntu/ class=next rel=next title="Apache Oozie Installation on Ubuntu">Apache Oozie Installation on Ubuntu<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.74.3">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2013 - 2020</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>Ang</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','UA-34162724-1',{'anonymize_ip':true});</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-34162724-1" async></script></body></html>

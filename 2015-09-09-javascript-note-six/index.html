@@ -1,0 +1,335 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>JavaScript Note Six - Ang's Blog</title><meta name=Description content="Ang's Blog"><meta property="og:title" content="JavaScript Note Six"><meta property="og:description" content="Exceptions 1 2 3 4 5 6 7 8 9  try { (function() { throw new Error(&#34;Error !&#34;); })(); } catch (error) { console.log(&#34;Something went wrong: &#34; + error); } finally { console.log(&#34;finally called&#34;); }    JavaScript (in a rather glaring omission) doesn’t provide direct support for selectively catching exceptions We want to catch a specific kind of exception. We can do this by checking in the catch block whether the exception we got is the one we are interested in and by rethrowing it otherwise let’s define a new type of error and use instanceof to identify it."><meta property="og:type" content="article"><meta property="og:url" content="http://anggao.github.io/2015-09-09-javascript-note-six/"><meta property="og:image" content="http://anggao.github.io/logo.png"><meta property="article:published_time" content="2015-09-09T00:00:00+00:00"><meta property="article:modified_time" content="2015-09-09T00:00:00+00:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="http://anggao.github.io/logo.png"><meta name=twitter:title content="JavaScript Note Six"><meta name=twitter:description content="Exceptions 1 2 3 4 5 6 7 8 9  try { (function() { throw new Error(&#34;Error !&#34;); })(); } catch (error) { console.log(&#34;Something went wrong: &#34; + error); } finally { console.log(&#34;finally called&#34;); }    JavaScript (in a rather glaring omission) doesn’t provide direct support for selectively catching exceptions We want to catch a specific kind of exception. We can do this by checking in the catch block whether the exception we got is the one we are interested in and by rethrowing it otherwise let’s define a new type of error and use instanceof to identify it."><meta name=application-name content="Ang's Blog"><meta name=apple-mobile-web-app-title content="Ang's Blog"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=http://anggao.github.io/2015-09-09-javascript-note-six/><link rel=prev href=http://anggao.github.io/2015-09-04-java-8-notes/><link rel=next href=http://anggao.github.io/2015-09-15-javascript-note-seven/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"JavaScript Note Six","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/anggao.github.io\/2015-09-09-javascript-note-six\/"},"image":["http:\/\/anggao.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"javascript","wordcount":1822,"url":"http:\/\/anggao.github.io\/2015-09-09-javascript-note-six\/","datePublished":"2015-09-09T00:00:00+00:00","dateModified":"2015-09-09T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":"http:\/\/anggao.github.io\/images\/avatar.png"},"author":{"@type":"Person","name":"Ang"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="Ang's Blog"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>Ang's Blog</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><a class=menu-item href=/about/>About </a><a class=menu-item href=https://github.com/anggao title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="Ang's Blog"><span class=header-title-pre><i class="far fa-kiss-wink-heart fa-fw"></i></span>Ang's Blog</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/posts/>Posts</a><a class=menu-item href=/tags/>Tags</a><a class=menu-item href=/categories/>Categories</a><a class=menu-item href=/about/>About</a><a class=menu-item href=https://github.com/anggao title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">JavaScript Note Six</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Ang</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2015-09-09>2015-09-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1822 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;9 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#exceptions>Exceptions</a></li><li><a href=#regular-expressions>Regular Expressions</a><ul><li><a href=#repeating-parts-of-a-pattern>Repeating parts of a pattern</a></li><li><a href=#grouping-subexpressions>Grouping subexpressions</a></li><li><a href=#matches-and-groups>Matches and groups</a></li></ul></li><li><a href=#the-date-type>The date type</a><ul><li><a href=#the-replace-method>The replace method</a></li><li><a href=#greed>Greed</a></li><li><a href=#dynamically-creating-regexp-objects>Dynamically creating RegExp objects</a></li><li><a href=#the-search-method>The search method</a></li><li><a href=#the-lastindex-property>The lastIndex property</a></li><li><a href=#looping-over-matches>Looping over matches</a></li><li><a href=#parsing-an-ini-file>Parsing an INI file</a></li><li><a href=#international-characters>International characters</a></li><li><a href=#summary>Summary</a></li></ul></li></ul></li></ul></nav></div></div><div class=content id=content><h3 id=exceptions>Exceptions</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=k>try</span> <span class=p>{</span>
+  <span class=p>(</span><span class=kd>function</span><span class=p>()</span> <span class=p>{</span>
+    <span class=k>throw</span> <span class=k>new</span> <span class=nb>Error</span><span class=p>(</span><span class=s2>&#34;Error !&#34;</span><span class=p>);</span>
+  <span class=p>})();</span>
+<span class=p>}</span> <span class=k>catch</span> <span class=p>(</span><span class=nx>error</span><span class=p>)</span> <span class=p>{</span>
+  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;Something went wrong: &#34;</span> <span class=o>+</span> <span class=nx>error</span><span class=p>);</span>
+<span class=p>}</span> <span class=k>finally</span> <span class=p>{</span>
+  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;finally called&#34;</span><span class=p>);</span>
+<span class=p>}</span>
+</code></pre></td></tr></table></div></div><ul><li>JavaScript (in a rather glaring omission) doesn’t provide direct support for selectively catching exceptions</li><li>We want to catch a specific kind of exception. We can do this by checking in the catch block whether the exception we got is the one we are interested in and by rethrowing it otherwise</li><li>let’s define a new type of error and use instanceof to identify it.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>function</span> <span class=nx>InputError</span><span class=p>(</span><span class=nx>message</span><span class=p>)</span> <span class=p>{</span>
+  <span class=k>this</span><span class=p>.</span><span class=nx>message</span> <span class=o>=</span> <span class=nx>message</span><span class=p>;</span>
+  <span class=k>this</span><span class=p>.</span><span class=nx>stack</span> <span class=o>=</span> <span class=p>(</span><span class=k>new</span> <span class=nb>Error</span><span class=p>()).</span><span class=nx>stack</span><span class=p>;</span>
+<span class=p>}</span>
+<span class=nx>InputError</span><span class=p>.</span><span class=nx>prototype</span> <span class=o>=</span> <span class=nb>Object</span><span class=p>.</span><span class=nx>create</span><span class=p>(</span><span class=nb>Error</span><span class=p>.</span><span class=nx>prototype</span><span class=p>);</span>
+<span class=nx>InputError</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>name</span> <span class=o>=</span> <span class=s2>&#34;InputError&#34;</span>
+
+<span class=k>try</span> <span class=p>{</span>
+  <span class=p>...</span>
+<span class=p>}</span> <span class=k>catch</span><span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+  <span class=k>if</span> <span class=p>(</span><span class=nx>e</span> <span class=k>instanceof</span> <span class=nx>InputError</span><span class=p>)</span>
+    <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;InputError !&#34;</span><span class=p>);</span>
+  <span class=k>else</span>
+    <span class=k>throw</span> <span class=nx>e</span><span class=p>;</span>
+<span class=p>}</span>
+</code></pre></td></tr></table></div></div><ul><li>Assertions are a tool to do basic sanity checking for programmer errors.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>function</span> <span class=nx>AssertionFailed</span><span class=p>(</span><span class=nx>Message</span><span class=p>)</span> <span class=p>{</span>
+  <span class=k>this</span><span class=p>.</span><span class=nx>message</span> <span class=o>=</span> <span class=nx>message</span><span class=p>;</span>
+<span class=p>}</span>
+<span class=nx>AssertionFailed</span><span class=p>.</span><span class=nx>prototype</span> <span class=o>=</span> <span class=nb>Object</span><span class=p>.</span><span class=nx>create</span><span class=p>(</span><span class=nb>Error</span><span class=p>.</span><span class=nx>prototype</span><span class=p>);</span>
+<span class=kd>function</span> <span class=nx>assert</span><span class=p>(</span><span class=nx>test</span><span class=p>,</span> <span class=nx>message</span><span class=p>)</span> <span class=p>{</span>
+  <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=nx>test</span><span class=p>)</span> <span class=k>throw</span> <span class=k>new</span> <span class=nx>AssertionFailed</span><span class=p>(</span><span class=nx>message</span><span class=p>);</span>
+<span class=p>}</span>
+</code></pre></td></tr></table></div></div><h3 id=regular-expressions>Regular Expressions</h3><ul><li>A regular expression is a type of object</li><li>It can either be constructed with the RegExp constructor or written as a literal value by enclosing the pattern in forward slash (<code>/</code>) characters.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>re1</span> <span class=o>=</span> <span class=k>new</span> <span class=nb>RegExp</span><span class=p>(</span><span class=s2>&#34;abc&#34;</span><span class=p>);</span>
+<span class=kd>var</span> <span class=nx>re2</span> <span class=o>=</span> <span class=sr>/abc/</span><span class=p>;</span>
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=sr>/abc/</span><span class=p>.</span><span class=nx>test</span><span class=p>(</span><span class=s2>&#34;abcde&#34;</span><span class=p>));</span>
+<span class=c1>// → true
+</span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=sr>/[0-9]/</span><span class=p>.</span><span class=nx>test</span><span class=p>(</span><span class=s2>&#34;in 1992&#34;</span><span class=p>));</span>
+<span class=c1>// → true
+</span></code></pre></td></tr></table></div></div><ul><li><code>\d</code> Any digit character, means the same thing as <code>[0-9]</code>.</li><li><code>\w</code> An alphanumeric character (“word character”)</li><li><code>\s</code> Any whitespace character (space, tab, newline, and similar)</li><li><code>\D</code> A character that is not a digit</li><li><code>\W</code> A nonalphanumeric character</li><li><code>\S</code> A nonwhitespace character</li><li><code>.</code> Any character except for newline</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>dateTime</span> <span class=o>=</span> <span class=sr>/\d\d-\d\d-\d\d\d\d \d\d:\d\d/</span><span class=p>;</span>
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>dateTime</span><span class=p>.</span><span class=nx>test</span><span class=p>(</span><span class=s2>&#34;30-01-2003 15:20&#34;</span><span class=p>));</span>
+<span class=c1>// → true
+</span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>dateTime</span><span class=p>.</span><span class=nx>test</span><span class=p>(</span><span class=s2>&#34;30-jan-2003 15:20&#34;</span><span class=p>));</span>
+<span class=c1>// → false
+</span><span class=c1></span><span class=kd>var</span> <span class=nx>notBinary</span> <span class=o>=</span> <span class=sr>/[^01]/</span><span class=p>;</span>
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>notBinary</span><span class=p>.</span><span class=nx>test</span><span class=p>(</span><span class=s2>&#34;1100100010100110&#34;</span><span class=p>));</span>
+<span class=c1>// → false
+</span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>notBinary</span><span class=p>.</span><span class=nx>test</span><span class=p>(</span><span class=s2>&#34;1100100010200110&#34;</span><span class=p>));</span>
+<span class=c1>// → true
+</span></code></pre></td></tr></table></div></div><ul><li>These backslash codes can also be used inside square brackets. For example, <code>[\d.]</code> means any digit or a period character. But note that the period itself, when used between square brackets, loses its special meaning. The same goes for other special characters, such as <code>+.</code></li></ul><h4 id=repeating-parts-of-a-pattern>Repeating parts of a pattern</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>dateTime</span> <span class=o>=</span> <span class=sr>/\d{1,2}-\d{1,2}-\d{4} \d{1,2}:\d{2}/</span><span class=p>;</span>
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>dateTime</span><span class=p>.</span><span class=nx>test</span><span class=p>(</span><span class=s2>&#34;30-1-2003 8:45&#34;</span><span class=p>));</span>
+<span class=c1>// → true
+</span></code></pre></td></tr></table></div></div><h4 id=grouping-subexpressions>Grouping subexpressions</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>cartoonCrying</span> <span class=o>=</span> <span class=sr>/boo+(hoo+)+/i</span><span class=p>;</span>
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>cartoonCrying</span><span class=p>.</span><span class=nx>test</span><span class=p>(</span><span class=s2>&#34;Boohoooohoohooo&#34;</span><span class=p>));</span>
+<span class=c1>// → true
+</span></code></pre></td></tr></table></div></div><ul><li>The <code>i</code> at the end of the expression in the previous example makes this regular expression case insensitive</li></ul><h4 id=matches-and-groups>Matches and groups</h4><ul><li>Regular expressions also have an <code>exec</code> (execute) method that will return <code>null</code> if no match was found and return an object with information about the match otherwise.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>match</span> <span class=o>=</span> <span class=sr>/\d+/</span><span class=p>.</span><span class=nx>exec</span><span class=p>(</span><span class=s2>&#34;one two 100&#34;</span><span class=p>);</span>
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>match</span><span class=p>);</span>
+<span class=c1>// → [&#34;100&#34;]
+</span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>match</span><span class=p>.</span><span class=nx>index</span><span class=p>);</span>
+<span class=c1>// → 8
+</span></code></pre></td></tr></table></div></div><ul><li>String values have a match method that behaves similarly.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;one two 100&#34;</span><span class=p>.</span><span class=nx>match</span><span class=p>(</span><span class=sr>/\d+/</span><span class=p>));</span>
+<span class=c1>// → [&#34;100&#34;]
+</span></code></pre></td></tr></table></div></div><ul><li>When the regular expression contains subexpressions grouped with parentheses, the text that matched those groups will also show up in the array.</li><li>When a group does not end up being matched at all (for example, when followed by a question mark), its position in the output array will hold undefined. Similarly, when a group is matched multiple times, only the last match ends up in the array.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>quotedText</span> <span class=o>=</span> <span class=sr>/&#39;([^&#39;]*)&#39;/</span><span class=p>;</span>
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>quotedText</span><span class=p>.</span><span class=nx>exec</span><span class=p>(</span><span class=s2>&#34;she said &#39;hello&#39;&#34;</span><span class=p>));</span>
+<span class=c1>// → [&#34;&#39;hello&#39;&#34;, &#34;hello&#34;]
+</span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=sr>/bad(ly)?/</span><span class=p>.</span><span class=nx>exec</span><span class=p>(</span><span class=s2>&#34;bad&#34;</span><span class=p>));</span>
+<span class=c1>// → [&#34;bad&#34;, undefined]
+</span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=sr>/(\d)+/</span><span class=p>.</span><span class=nx>exec</span><span class=p>(</span><span class=s2>&#34;123&#34;</span><span class=p>));</span>
+<span class=c1>// → [&#34;123&#34;, &#34;3&#34;]
+</span></code></pre></td></tr></table></div></div><h3 id=the-date-type>The date type</h3><ul><li>JavaScript has a standard object type for representing dates—or rather, points in time. It is called <code>Date</code>.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=k>new</span> <span class=nb>Date</span><span class=p>());</span>
+<span class=c1>// → Wed Dec 04 2013 14:24:57 GMT+0100 (CET)
+</span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=k>new</span> <span class=nb>Date</span><span class=p>(</span><span class=mi>2009</span><span class=p>,</span> <span class=mi>11</span><span class=p>,</span> <span class=mi>9</span><span class=p>));</span>
+<span class=c1>// → Wed Dec 09 2009 00:00:00 GMT+0100 (CET)
+</span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=k>new</span> <span class=nb>Date</span><span class=p>(</span><span class=mi>2009</span><span class=p>,</span> <span class=mi>11</span><span class=p>,</span> <span class=mi>9</span><span class=p>,</span> <span class=mi>12</span><span class=p>,</span> <span class=mi>59</span><span class=p>,</span> <span class=mi>59</span><span class=p>,</span> <span class=mi>999</span><span class=p>));</span>
+<span class=c1>// → Wed Dec 09 2009 12:59:59 GMT+0100 (CET)
+</span></code></pre></td></tr></table></div></div><ul><li>JavaScript uses a convention where <strong>month numbers start at zero (so December is 11)</strong>, yet day numbers start at one. This is confusing and silly. Be careful.</li><li>The <code>getTime</code> method on a date object returns “Unix time”</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=k>new</span> <span class=nb>Date</span><span class=p>(</span><span class=mi>2013</span><span class=p>,</span> <span class=mi>11</span><span class=p>,</span> <span class=mi>19</span><span class=p>).</span><span class=nx>getTime</span><span class=p>());</span>
+<span class=c1>// → 1387407600000
+</span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=k>new</span> <span class=nb>Date</span><span class=p>(</span><span class=mi>1387407600000</span><span class=p>));</span>
+<span class=c1>// → Thu Dec 19 2013 00:00:00 GMT+0100 (CET)
+</span><span class=c1></span>
+<span class=kd>function</span> <span class=nx>findDate</span><span class=p>(</span><span class=nx>string</span><span class=p>)</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>dateTime</span> <span class=o>=</span> <span class=sr>/(\d{1,2})-(\d{1,2})-(\d{4})/</span><span class=p>;</span>
+  <span class=kd>var</span> <span class=nx>match</span> <span class=o>=</span> <span class=nx>dateTime</span><span class=p>.</span><span class=nx>exec</span><span class=p>(</span><span class=nx>string</span><span class=p>);</span>
+  <span class=k>return</span> <span class=k>new</span> <span class=nb>Date</span><span class=p>(</span><span class=nb>Number</span><span class=p>(</span><span class=nx>match</span><span class=p>[</span><span class=mi>3</span><span class=p>]),</span> <span class=nb>Number</span><span class=p>(</span><span class=nx>match</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span> <span class=o>-</span> <span class=mi>1</span><span class=p>,</span> <span class=nb>Number</span><span class=p>(</span><span class=nx>match</span><span class=p>[</span><span class=mi>1</span><span class=p>]));</span>
+<span class=p>}</span>
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>findDate</span><span class=p>(</span><span class=s2>&#34;30-1-2003&#34;</span><span class=p>));</span>
+<span class=c1>// → Thu Jan 30 2003 00:00:00 GMT+0100 (CET)
+</span></code></pre></td></tr></table></div></div><ul><li>If we want to enforce that the match must span the whole string, we can add the markers <code>^</code> and <code>$</code>.</li><li>If, on the other hand, we just want to make sure the date starts and ends on a word boundary, we can use the marker <code>\b</code>.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=sr>/cat/</span><span class=p>.</span><span class=nx>test</span><span class=p>(</span><span class=s2>&#34;concatenate&#34;</span><span class=p>));</span>
+<span class=c1>// → true
+</span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=sr>/\bcat\b/</span><span class=p>.</span><span class=nx>test</span><span class=p>(</span><span class=s2>&#34;concatenate&#34;</span><span class=p>));</span>
+<span class=c1>// → false
+</span></code></pre></td></tr></table></div></div><ul><li>The regular expression <code>/\b([01]+b|\d+|[\da-f]+h)\b/</code> matches either a binary number followed by a <code>b</code>, a regular decimal number with no suffix character, or a hexadecimal number (that is, base 16, with the letters a to f standing for the digits 10 to 15) followed by an <code>h</code>.</li></ul><h4 id=the-replace-method>The replace method</h4><ul><li>String values have a replace method, which can be used to replace part of the string with another string.</li><li>The first argument can also be a regular expression, in which case the first match of the regular expression is replaced</li><li>When a <code>g</code> option (for global) is added to the regular expression, all matches in the string will be replaced, not just the first.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;Borobudur&#34;</span><span class=p>.</span><span class=nx>replace</span><span class=p>(</span><span class=sr>/[ou]/</span><span class=p>,</span> <span class=s2>&#34;a&#34;</span><span class=p>));</span>
+<span class=c1>// → Barobudur
+</span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;Borobudur&#34;</span><span class=p>.</span><span class=nx>replace</span><span class=p>(</span><span class=sr>/[ou]/g</span><span class=p>,</span> <span class=s2>&#34;a&#34;</span><span class=p>));</span>
+<span class=c1>// → Barabadar
+</span><span class=c1></span>
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span>
+  <span class=s2>&#34;Hopper, Grace\nMcCarthy, John\nRitchie, Dennis&#34;</span><span class=p>.</span><span class=nx>replace</span><span class=p>(</span>
+    <span class=sr>/([\w ]+), ([\w ]+)/g</span><span class=p>,</span>
+    <span class=s2>&#34;$2 $1&#34;</span>
+  <span class=p>)</span>
+<span class=p>);</span>
+<span class=c1>// → Grace Hopper
+</span><span class=c1>//   John McCarthy
+</span><span class=c1>//   Dennis Ritchie
+</span></code></pre></td></tr></table></div></div><ul><li>The <code>$1</code> and <code>$2</code> in the replacement string refer to the parenthesized groups in the pattern.</li><li>The whole match can be referred to with <code>$&</code>.</li><li>It is also possible to pass a function, rather than a string, as the second argument to replace. For each replacement, the function will be called with the matched groups (as well as the whole match) as arguments, and its return value will be inserted into the new string.</li></ul><h4 id=greed>Greed</h4><ul><li>The repetition operators (<code>+, *, ?, and {}</code>) are greedy, meaning they match as much as they can and backtrack from there.</li><li>If you put a question mark after them (<code>+?, *?, ??, {}?</code>), they become nongreedy and start by matching as little as possible</li></ul><h4 id=dynamically-creating-regexp-objects>Dynamically creating RegExp objects</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>name</span> <span class=o>=</span> <span class=s2>&#34;harry&#34;</span><span class=p>;</span>
+<span class=kd>var</span> <span class=nx>text</span> <span class=o>=</span> <span class=s2>&#34;Harry is a suspicious character.&#34;</span><span class=p>;</span>
+<span class=kd>var</span> <span class=nx>regexp</span> <span class=o>=</span> <span class=k>new</span> <span class=nb>RegExp</span><span class=p>(</span><span class=s2>&#34;\\b(&#34;</span> <span class=o>+</span> <span class=nx>name</span> <span class=o>+</span> <span class=s2>&#34;)\\b&#34;</span><span class=p>,</span> <span class=s2>&#34;gi&#34;</span><span class=p>);</span>
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>text</span><span class=p>.</span><span class=nx>replace</span><span class=p>(</span><span class=nx>regexp</span><span class=p>,</span> <span class=s2>&#34;_$1_&#34;</span><span class=p>));</span>
+<span class=c1>// → _Harry_ is a suspicious character.
+</span></code></pre></td></tr></table></div></div><ul><li>Adding backslashes before alphabetic characters is a bad idea because things like <code>\b</code> and <code>\n</code> have a special meaning. But escaping everything that’s not alphanumeric or whitespace is safe.</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>name</span> <span class=o>=</span> <span class=s2>&#34;dea+hl[]rd&#34;</span><span class=p>;</span>
+<span class=kd>var</span> <span class=nx>text</span> <span class=o>=</span> <span class=s2>&#34;This dea+hl[]rd guy is super annoying.&#34;</span><span class=p>;</span>
+<span class=kd>var</span> <span class=nx>escaped</span> <span class=o>=</span> <span class=nx>name</span><span class=p>.</span><span class=nx>replace</span><span class=p>(</span><span class=sr>/[^\w\s]/g</span><span class=p>,</span> <span class=s2>&#34;\\$&amp;&#34;</span><span class=p>);</span>
+<span class=kd>var</span> <span class=nx>regexp</span> <span class=o>=</span> <span class=k>new</span> <span class=nb>RegExp</span><span class=p>(</span><span class=s2>&#34;\\b(&#34;</span> <span class=o>+</span> <span class=nx>escaped</span> <span class=o>+</span> <span class=s2>&#34;)\\b&#34;</span><span class=p>,</span> <span class=s2>&#34;gi&#34;</span><span class=p>);</span>
+<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>text</span><span class=p>.</span><span class=nx>replace</span><span class=p>(</span><span class=nx>regexp</span><span class=p>,</span> <span class=s2>&#34;_$1_&#34;</span><span class=p>));</span>
+<span class=c1>// → This _dea+hl[]rd_ guy is super annoying.
+</span></code></pre></td></tr></table></div></div><h4 id=the-search-method>The search method</h4><ul><li>The <code>indexOf</code> method on strings cannot be called with a regular expression.</li><li>There is another method, <code>search</code>, which does expect a regular expression</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;  word&#34;</span><span class=p>.</span><span class=nx>search</span><span class=p>(</span><span class=sr>/\S/</span><span class=p>));</span>
+<span class=c1>// → 2
+</span><span class=c1></span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;    &#34;</span><span class=p>.</span><span class=nx>search</span><span class=p>(</span><span class=sr>/\S/</span><span class=p>));</span>
+<span class=c1>// → -1
+</span></code></pre></td></tr></table></div></div><h4 id=the-lastindex-property>The lastIndex property</h4><ul><li>Regular expression objects have properties.</li><li><code>source</code>, which contains the string that expression was created from</li><li><code>lastIndex</code>, which controls, in some limited circumstances, where the next match will start</li><li>Those circumstances are that the regular expression must have the global (g) option enabled, and the match must happen through the <code>exec</code> method</li><li>If the match was successful, the call to <code>exec</code> automatically updates the <code>lastIndex</code> property to point after the match. If no match was found, <code>lastIndex</code> is set back to zero</li></ul><h4 id=looping-over-matches>Looping over matches</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>var</span> <span class=nx>input</span> <span class=o>=</span> <span class=s2>&#34;A string with 3 numbers in it... 42 and 88.&#34;</span><span class=p>;</span>
+<span class=kd>var</span> <span class=nx>number</span> <span class=o>=</span> <span class=sr>/\b(\d+)\b/g</span><span class=p>;</span>
+<span class=kd>var</span> <span class=nx>match</span><span class=p>;</span>
+<span class=k>while</span> <span class=p>((</span><span class=nx>match</span> <span class=o>=</span> <span class=nx>number</span><span class=p>.</span><span class=nx>exec</span><span class=p>(</span><span class=nx>input</span><span class=p>)))</span>
+  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;Found&#34;</span><span class=p>,</span> <span class=nx>match</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=s2>&#34;at&#34;</span><span class=p>,</span> <span class=nx>match</span><span class=p>.</span><span class=nx>index</span><span class=p>);</span>
+<span class=c1>// → Found 3 at 14
+</span><span class=c1>//   Found 42 at 33
+</span><span class=c1>//   Found 88 at 40
+</span></code></pre></td></tr></table></div></div><h4 id=parsing-an-ini-file>Parsing an INI file</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=kd>function</span> <span class=nx>parseINI</span><span class=p>(</span><span class=nx>string</span><span class=p>)</span> <span class=p>{</span>
+  <span class=c1>// Start with an object to hold the top-level fields
+</span><span class=c1></span>  <span class=kd>var</span> <span class=nx>currentSection</span> <span class=o>=</span> <span class=p>{</span> <span class=nx>name</span><span class=o>:</span> <span class=kc>null</span><span class=p>,</span> <span class=nx>fields</span><span class=o>:</span> <span class=p>[]</span> <span class=p>};</span>
+  <span class=kd>var</span> <span class=nx>categories</span> <span class=o>=</span> <span class=p>[</span><span class=nx>currentSection</span><span class=p>];</span>
+
+  <span class=nx>string</span><span class=p>.</span><span class=nx>split</span><span class=p>(</span><span class=sr>/\r?\n/</span><span class=p>).</span><span class=nx>forEach</span><span class=p>(</span><span class=kd>function</span><span class=p>(</span><span class=nx>line</span><span class=p>)</span> <span class=p>{</span>
+    <span class=kd>var</span> <span class=nx>match</span><span class=p>;</span>
+    <span class=k>if</span> <span class=p>(</span><span class=sr>/^\s*(;.*)?$/</span><span class=p>.</span><span class=nx>test</span><span class=p>(</span><span class=nx>line</span><span class=p>))</span> <span class=p>{</span>
+      <span class=k>return</span><span class=p>;</span>
+    <span class=p>}</span> <span class=k>else</span> <span class=k>if</span> <span class=p>((</span><span class=nx>match</span> <span class=o>=</span> <span class=nx>line</span><span class=p>.</span><span class=nx>match</span><span class=p>(</span><span class=sr>/^\[(.*)\]$/</span><span class=p>)))</span> <span class=p>{</span>
+      <span class=nx>currentSection</span> <span class=o>=</span> <span class=p>{</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>match</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=nx>fields</span><span class=o>:</span> <span class=p>[]</span> <span class=p>};</span>
+      <span class=nx>categories</span><span class=p>.</span><span class=nx>push</span><span class=p>(</span><span class=nx>currentSection</span><span class=p>);</span>
+    <span class=p>}</span> <span class=k>else</span> <span class=k>if</span> <span class=p>((</span><span class=nx>match</span> <span class=o>=</span> <span class=nx>line</span><span class=p>.</span><span class=nx>match</span><span class=p>(</span><span class=sr>/^(\w+)=(.*)$/</span><span class=p>)))</span> <span class=p>{</span>
+      <span class=nx>currentSection</span><span class=p>.</span><span class=nx>fields</span><span class=p>.</span><span class=nx>push</span><span class=p>({</span> <span class=nx>name</span><span class=o>:</span> <span class=nx>match</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=nx>value</span><span class=o>:</span> <span class=nx>match</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=p>});</span>
+    <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+      <span class=k>throw</span> <span class=k>new</span> <span class=nb>Error</span><span class=p>(</span><span class=s2>&#34;Line &#39;&#34;</span> <span class=o>+</span> <span class=nx>line</span> <span class=o>+</span> <span class=s2>&#34;&#39; is invalid.&#34;</span><span class=p>);</span>
+    <span class=p>}</span>
+  <span class=p>});</span>
+
+  <span class=k>return</span> <span class=nx>categories</span><span class=p>;</span>
+<span class=p>}</span>
+</code></pre></td></tr></table></div></div><h4 id=international-characters>International characters</h4><ul><li>Things like <code>é</code> or <code>β</code>, which most definitely are word characters, will not match <code>\w</code> (and will match uppercase <code>\W</code>, the nonword category).</li><li>By a strange historical accident, <code>\s</code> (whitespace) does not have this problem and matches all characters that the Unicode standard considers whitespace</li></ul><h4 id=summary>Summary</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-javascript data-lang=javascript><span class=sr>/abc/</span>       <span class=nx>A</span> <span class=nx>sequence</span> <span class=k>of</span> <span class=nx>characters</span>
+<span class=sr>/[abc]/</span>   <span class=nx>Any</span> <span class=nx>character</span> <span class=nx>from</span> <span class=nx>a</span> <span class=nx>set</span> <span class=k>of</span> <span class=nx>characters</span>
+<span class=sr>/[^abc]/</span>    <span class=nx>Any</span> <span class=nx>character</span> <span class=nx>not</span> <span class=k>in</span> <span class=nx>a</span> <span class=nx>set</span> <span class=k>of</span> <span class=nx>characters</span>
+<span class=sr>/[0-9]/</span>   <span class=nx>Any</span> <span class=nx>character</span> <span class=k>in</span> <span class=nx>a</span> <span class=nx>range</span> <span class=k>of</span> <span class=nx>characters</span>
+<span class=sr>/x+/</span>        <span class=nx>One</span> <span class=nx>or</span> <span class=nx>more</span> <span class=nx>occurrences</span> <span class=k>of</span> <span class=nx>the</span> <span class=nx>pattern</span> <span class=nx>x</span>
+<span class=sr>/x+?/</span>       <span class=nx>One</span> <span class=nx>or</span> <span class=nx>more</span> <span class=nx>occurrences</span><span class=p>,</span> <span class=nx>nongreedy</span>
+<span class=sr>/x*/</span>        <span class=nx>Zero</span> <span class=nx>or</span> <span class=nx>more</span> <span class=nx>occurrences</span>
+<span class=sr>/x?/</span>        <span class=nx>Zero</span> <span class=nx>or</span> <span class=nx>one</span> <span class=nx>occurrence</span>
+<span class=sr>/x{2,4}/</span>    <span class=nx>Between</span> <span class=nx>two</span> <span class=nx>and</span> <span class=nx>four</span> <span class=nx>occurrences</span>
+<span class=sr>/(abc)/</span>   <span class=nx>A</span> <span class=nx>group</span>
+<span class=sr>/a|b|c/</span>   <span class=nx>Any</span> <span class=nx>one</span> <span class=k>of</span> <span class=nx>several</span> <span class=nx>patterns</span>
+<span class=sr>/\d/</span>        <span class=nx>Any</span> <span class=nx>digit</span> <span class=nx>character</span>
+<span class=sr>/\w/</span>        <span class=nx>An</span> <span class=nx>alphanumeric</span> <span class=nx>character</span> <span class=p>(</span><span class=err>“</span><span class=nx>word</span> <span class=nx>character</span><span class=err>”</span><span class=p>)</span>
+<span class=sr>/\s/</span>        <span class=nx>Any</span> <span class=nx>whitespace</span> <span class=nx>character</span>
+<span class=sr>/./</span>       <span class=nx>Any</span> <span class=nx>character</span> <span class=nx>except</span> <span class=nx>newlines</span>
+<span class=sr>/\b/</span>        <span class=nx>A</span> <span class=nx>word</span> <span class=nx>boundary</span>
+<span class=sr>/^/</span>       <span class=nx>Start</span> <span class=k>of</span> <span class=nx>input</span>
+<span class=sr>/$/</span>       <span class=nx>End</span> <span class=k>of</span> <span class=nx>input</span>
+</code></pre></td></tr></table></div></div><p>A regular expression has a method test to test whether a given string matches it. It also has an exec method that, when a match is found, returns an array containing all matched groups. Such an array has an index property that indicates where the match started.</p><p>Strings have a match method to match them against a regular expression and a search method to search for one, returning only the starting position of the match. Their replace method can replace matches of a pattern with a replacement string. Alternatively, you can pass a function to replace, which will be used to build up a replacement string based on the match text and matched groups.</p><p>Regular expressions can have options, which are written after the closing slash. The i option makes the match case insensitive, while the g option makes the expression global, which, among other things, causes the replace method to replace all instances instead of just the first.</p><p>The RegExp constructor can be used to create a regular expression value from a string.</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2015-09-09</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/2015-09-09-javascript-note-six/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on Twitter" data-sharer=twitter data-url=http://anggao.github.io/2015-09-09-javascript-note-six/ data-title="JavaScript Note Six" data-via=anggao data-hashtags=javascript><i class="fab fa-twitter fa-fw"></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=http://anggao.github.io/2015-09-09-javascript-note-six/ data-hashtag=javascript><i class="fab fa-facebook-square fa-fw"></i></a><a href=javascript:void(0); title="Share on Linkedin" data-sharer=linkedin data-url=http://anggao.github.io/2015-09-09-javascript-note-six/><i class="fab fa-linkedin fa-fw"></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=http://anggao.github.io/2015-09-09-javascript-note-six/ data-title="JavaScript Note Six"><i class="fab fa-hacker-news fa-fw"></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/javascript/>javascript</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/2015-09-04-java-8-notes/ class=prev rel=prev title="Java 8 Notes"><i class="fas fa-angle-left fa-fw"></i>Java 8 Notes</a>
+<a href=/2015-09-15-javascript-note-seven/ class=next rel=next title="JavaScript Note Seven">JavaScript Note Seven<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.74.3">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2013 - 2020</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>Ang</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/sharer/sharer.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type=text/javascript src=/js/theme.min.js></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','UA-34162724-1',{'anonymize_ip':true});</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-34162724-1" async></script></body></html>
