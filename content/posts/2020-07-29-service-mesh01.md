@@ -1,5 +1,5 @@
 ---
-title: "2020 07 29 Service Mesh01"
+title: "Service Mesh01"
 date: 2020-07-29T12:59:24+01:00
 draft: true
 ---
