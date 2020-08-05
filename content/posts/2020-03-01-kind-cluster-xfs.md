@@ -28,7 +28,7 @@ realtime =none                   extsz=4096   blocks=0, rtextents=0
 ```
 The 3rd column of the 6th line of the xfs_info output is the most interesting because it contains the parameter ftype which should be 1. When ftype is 0, d_type support is disabled. When it is 1, d_type support is enabled and you're safe to use the overlay(2) storage driver with Docker on an XFS filesystem.
 
-### K8s event
+## K8s event
 
 ```
 kubectl get event
