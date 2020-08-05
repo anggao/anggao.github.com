@@ -49,6 +49,24 @@ nodes:
 ```
 
 ```
-kind create cluster --config ./kind-config.yaml --name test-cluster
+kind create cluster --config ./kind-config.yaml --name istio-cluster
 ```
 
+## Testing
+
+```
+❯ kubectl get nodes
+NAME                          STATUS   ROLES    AGE     VERSION
+istio-cluster-control-plane   Ready    master   2m12s   v1.17.2
+istio-cluster-worker          Ready    <none>   95s     v1.17.2
+istio-cluster-worker2         Ready    <none>   95s     v1.17.2
+
+❯ kubectl cluster-info
+Kubernetes master is running at https://127.0.0.1:39936
+KubeDNS is running at https://127.0.0.1:39936/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+❯ kind delete cluster --name istio-cluster
+Deleting cluster "istio-cluster" ...
+```
