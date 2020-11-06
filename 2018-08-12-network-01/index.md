@@ -1,0 +1,59 @@
+# Network 01
+
+
+## MAC
+
++ Media access control (MAC) addresses are identifiers uniquely assigned to network interfaces.
++ first 3 octets refer to the Organizationally Unique Identifier (OUI) which can help identify manufacturers
+
+## IP
+
++ IP addresses are means of identifying devices connected to a network under Internet Protocol. 
++ In IPv4 we can partition a block of addresses into a subnet.
++ The number that comes after the slash (`/`) is the subnet mask.
++ This represents how many bits are in the network address, the remaining bits identify a host within the network.
+
+## ARP
+
++ Address Resolution Protocol (ARP) is a protocol used to resolve IP addresses to MAC addresses.
++ unicast:  unicasting a frame means to send that frame to exactly one MAC address.
++ broadcast:  broadcasting a frame by sending it to the broadcast address means the frame should be sent to every device on the network.
+
+
+
+## DNS
+
++ DNS is a system that maps a domain name like google.com to its IPs.
++ DNS Records
+  + **A records** name = hostname, value = IP address
+  + **NS records** name = domain, value = name of dns server for domain
+  + **CNAME records** name = alias, value = canonical name
+  + **MX records** The record used by mail service.
+
+## TCP
+
++ Transmission Control Protocol (TCP) 
++ TCP is a stateful stream oriented protocol that ensures reliable transport.
++ Guarantees that information arrives wholly intact and in order at the destination.
++ TCP is a connection oriented protocol which means it must first establish a connection before sending any data.
++ A TCP connection begins with something known as the TCP handshake.
++ The TCP handshake consists of setting certain flags in the TCP header of packets exchanged between sender and receiver. 
+  + Client, SYN, a packet with the SYN flag set.
+  + Server, SYN-ACK, a packet with both the SYN and ACK flags set
+  + Client, ACK
++ TCP then begins transmitting data and if it successfully arrives on the other end of the connection then an ACK is issued.
++ TCP also has a procedure to close connections. For a graceful termination:
+  + Clinet, FIN
+  + Server,  respond by sending a FIN and an ACK
+    +  If Server only sends a ACK the connection persist and additional data can be sent until an FIN is sent.
+  +  Once Client has received a FIN and an ACK it sends one last ACK to signal the connection termination.
+
+## UDP
+
++ User Datagram Protocol (UDP)
++ UDP is stateless connectionless protocol. 
++ UDP focuses on sending messages in datagrams.
++ Being connectionless UDP also doesn’t incur the overhead of the TCP handshake and termination. 
++ 
+
+
