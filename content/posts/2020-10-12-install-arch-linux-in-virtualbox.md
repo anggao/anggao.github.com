@@ -199,13 +199,21 @@ vim /boot/loader/entries/arch.conf
 title   Arch Linux
 linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
-options cryptdevice=UUID=290d6a44-2964-48a0-a71e-ea3df0525987:cryptroot root=/dev/mapper/cryptroot rw
+options cryptdevice=UUID=b219d331-8ea6-4678-ae6b-f041ee146bd2:cryptroot root=/dev/mapper/cryptroot rw
 ```
 
-Make sure replace `290d6a44-2964-48a0-a71e-ea3df0525987` with the correct UUID for the encrypted `/dev/sda2` partition. 
+Make sure replace `2b219d331-8ea6-4678-ae6b-f041ee146bd2` with the correct UUID for the encrypted `/dev/sda2` partition. 
 
 ```bash
 ls -l /dev/disk/by-uuid
+```
+
+#### Enable DHCP and SSH
+```
+pacman -S dhcpcd
+systemctl enable dhcpcd
+pacman -S openssh
+systemctl enable sshd
 ```
 
 Type `exit` to exit the chroot and then type `reboot` 
