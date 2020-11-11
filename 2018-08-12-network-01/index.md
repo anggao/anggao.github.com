@@ -54,6 +54,5 @@
 + UDP is stateless connectionless protocol. 
 + UDP focuses on sending messages in datagrams.
 + Being connectionless UDP also doesn’t incur the overhead of the TCP handshake and termination. 
-+ 
 
 
