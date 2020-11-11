@@ -218,5 +218,19 @@ systemctl enable sshd
 
 Type `exit` to exit the chroot and then type `reboot` 
 
+#### Config static IP (optional)
+
+```bash
+vim /etc/dhcpcd.conf
+interface enp0s3
+static ip_address=192.168.10.10/24
+static routers=192.168.10.1
+static domain_name_servers=8.8.8.8
+
+systemctl restart dhcpcd
+```
+
+
+
 That's all 🎉
 
