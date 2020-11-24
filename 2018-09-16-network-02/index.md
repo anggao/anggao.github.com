@@ -1,0 +1,104 @@
+# Network 02
+
+
+### Network Interfaces
+
++ Network interfaces represent a point of connection between a computer and a network.
++  interfaces can be software or hardware
+
+### /proc filesystem
+
++ `/proc/net/[tcp|udp|raw]`
++ `/proc/net/route`
++ `/proc/net/dev`
++ `/proc/net/arp`
++ `/proc/net/snmp`
++ **/proc/sys/net** which concerns various networking topics
+  + `/proc/sys/net/core/`
+    + `message_burst`, `message_cost` `message_burst` defaults to 10 and `message_cost` defaults to 5. This means the kernel is limited to logging 10 entries every 5 seconds.
+    + `netdev_max_backlog` maximum number of packets allowed to queue on a particular interface.
+    + `rmem_default` and `rmem_max` These files define the default and maximum buffer sizes for receive sockets, respectively.
+    + `smem_default` and `smem_max` These files define the default and maximum buffer sizes for send sockets, respectively.
+  + `/proc/sys/net/ipv4/`
+    + `ip_forward` 
+    + `icmp_echo_ignore_all`
+    + `icmp_echo_ignore_broadcasts`
+    + `ip_default_ttl`
+    + `ip_local_port_range`
+
+### DNS configuration
+
++ **/etc/hosts**
+  + static mappings from IP addresses to hostnames.
+  + <ip-address> <cannonical-hostname> [aliases]
++ **/etc/resolv.conf**, 
+  + configuration file for the system resolver
+  + `domain` Using this option will specific a local domain name.
+  + `search` Using this options specifies a list of domain names to iterate through when attempting to look up queries.
+  + **`search` and `domain` are mutually exclusive keywords**
+  + `nameserver`. One can have up to `MAXNS` (default 3) `nameserver` entries in this file. The resolver will query nameservers in the same order as they are written in the file.
++ **/etc/nsswitch.conf**.
+  + list sources of information and configure prioritization between sources.
+
+#### [Network Diagnostics](https://www.linode.com/docs/guides/diagnosing-network-issues-with-mtr/)
+
++ Networking diagnostic tools including `ping`, `traceroute`, and `mtr` use Internet Control Message Protocol (ICMP) packets to test contention and traffic between two points on the Internet.
++ Tools such as traceroute and MTR send ICMP packets with incrementally increasing TTLs in order to view the route or series of hops that the packet makes between the origin and its destination.
+  + `mtr -rw [destination_host]`
+
+#### [Iptables](https://www.digitalocean.com/community/tutorials/how-the-iptables-firewall-works)
+
++ Iptables is a standard firewall, a front end to the kernel-level netfilter hooks that can manipulate the Linux network stack.
+
++ When the defined pattern matches, the action that takes place is called a **target**
+
++ These rules are organized into groups called **chains**. 
+
++ A user can create chains as needed. There are three chains defined by default.
+
+  + **INPUT**: This chain handles all packets that are addressed to your server.
+  + **OUTPUT**: This chain contains rules for traffic created by your server.
+  + **FORWARD**: This chain is used to deal with traffic destined for other servers that are not created on your server. This chain is basically a way to configure your server to route requests to other machines.
+
++ Each chain can contain zero or more rules, and has a default **policy**. 
+
++ The policy determines what happens when a packet drops through all of the rules in the chain and does not match any rule.
+
++ The regular `iptables` command is used to manipulate the table containing rules that govern IPv4 traffic. For IPv6 traffic, a companion command called `ip6tables` is used. 
+
++ ```bash
+  -L, --list [chain]
+  List all rules in the selected chain.  If no chain is selected, all chains are listed. Like every other iptables command, it applies to the specified table (filter is the default), so NAT rules get listed by
+                 iptables -t nat -n -L
+  Please  note  that  it is often used with the -n option, in order to avoid long reverse DNS lookups.  It is legal to specify the -Z (zero) option as well, in which case the chain(s) will be atomically listed and zeroed.  The exact output is affected by the other arguments given. The exact rules are suppressed until you use
+                 iptables -L -v
+  
+  -S, --list-rules [chain]
+  Print all rules in the selected chain.  If no chain is selected, all chains are printed like iptables-save. Like every other iptables command, it applies to the specified table (filter is the default).
+  
+  -F, --flush [chain]
+  Flush the selected chain (all the chains in the table if none is given).  This is equivalent to deleting all the rules one by one.
+  ```
+
++ For `-F` all of the rules are deleted from your chains, the default policy will *not* change with this command. 
++ `iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT`
++ `iptables -A INPUT -p tcp --dport 22 -j ACCEPT`
++ `iptables -A INPUT -p tcp --dport 80 -j ACCEPT`
++ `iptables -P INPUT DROP` VS `iptables -A INPUT -j DROP`
++ `iptables -L --line-numbers`
++ `iptables-save -f /etc/iptables/iptables.rules`
++ `iptables-restore /etc/iptables/iptables.rules`
++ it is also possible to show the number of packets, and the aggregate size of the packets in bytes, that matched each particular rule. `-v`
++  clear the counters for all chains and rules, use the `-Z` option
++ `iptables -Z INPUT 1`
++ `iptables -D INPUT -m conntrack --ctstate INVALID -j DROP`
++ `iptables -D INPUT 3`
++ Flush a Single Chain - `iptables -F INPUT`
++ Flush All Chains - `iptables -F`
++ `iptables -t nat -F`
++ `iptables -t mangle -F`
++ `iptables -F`
++ `iptables -X` - delete all non-default chains (`-X`)
++ 
+
+
